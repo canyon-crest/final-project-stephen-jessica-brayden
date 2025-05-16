@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+import javax.swing.ImageIcon;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -48,6 +49,12 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.white);
 		g2.fillRect(100,100,tileSize,tileSize);
+		
+		ImageIcon image1 = new ImageIcon("images/bird_00.png");
+		g2.drawImage(image1.getImage(), 400, 200, 100, 100, null);
+		ImageIcon image2 = new ImageIcon("images/bird_04.png");
+		g2.drawImage(image2.getImage(), 500, 200, 100, 100, null);
+		
 		g2.dispose();
 	}
 }

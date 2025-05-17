@@ -1,3 +1,4 @@
+package entities;
 
 public class Player {
 	private int flapStrengthLevel = 1;

@@ -86,12 +86,11 @@ public class GamePanel extends JPanel implements Runnable{
 	//Update's game info
 	public void update() {
 		angle = (mouse.y-this.getLocationOnScreen().getY()-100)/75/Math.sqrt(screenWidth^2+screenHeight^2);
-		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(-angle)-1)*scalar);
-		playerXvelo *= player.getDrag()*Math.abs(angle);
-		playerXvelo += player.getLift()*Math.sqrt(1-angle*angle)*playerYvelo;
+		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-1)*scalar);
+		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(1-Math.abs(angle))*scalar*1/100);
 		if (mouse.click == true) {
 			playerYvelo += 100*player.getFlapStrength()*scalar*(-angle);
-			//playerXvelo += 10*player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
+			playerXvelo += 10*player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
 			boostLimit--;
 		}
 		playerY -= (int)playerYvelo;

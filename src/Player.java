@@ -36,7 +36,7 @@ public class Player {
 	}
 	
 	public int getFlapLimit() {
-		return (int) (1000000*Math.pow(1.3, flapStrengthLevel));
+		return (int) (1000000*Math.pow(1.3, flapLimitLevel));
 	}
 	public double getLift() {
 		return Math.pow(0.95, liftLevel);

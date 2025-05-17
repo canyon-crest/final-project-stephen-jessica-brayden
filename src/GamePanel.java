@@ -18,7 +18,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Game speed
 	int FPS = 30;
-	double scalar = 0.6;
+	double scalar = 0.5;
 	
 	MouseHandler mouse = new MouseHandler();
 	Thread gameThread;
@@ -85,17 +85,17 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Update's game info
 	public void update() {
-		angle = (mouse.y-this.getLocationOnScreen().getY()-100)/75/Math.sqrt(screenWidth^2+screenHeight^2);
+		angle = (mouse.y-this.getLocationOnScreen().getY()-75)/50/Math.sqrt(screenWidth^2+screenHeight^2);
 		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-1)*scalar);
-		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(1-Math.abs(angle))*scalar*1/100);
+		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(1-Math.abs(angle))*scalar/100);
 		if (mouse.click == true) {
 			playerYvelo += 100*player.getFlapStrength()*scalar*(-angle);
 			playerXvelo += 10*player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
 			boostLimit--;
 		}
-		playerY -= (int)playerYvelo;
-		//playerX += (int)playerXvelo;
-		System.out.print(playerXvelo+" "+playerYvelo+"\r");
+		playerY += (int)playerYvelo;
+		playerX += (int)playerXvelo;
+		System.out.print(playerX+"\r");
 
 		
 	}
@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setColor(Color.white);
-		g2.fillRect(100,playerY,tileSize,tileSize);
+		g2.fillRect(100,100,tileSize,tileSize);
 		/*
 		ImageIcon image1 = new ImageIcon("images/bird_00.png");
 		g2.drawImage(image1.getImage(), 400, 200, 100, 100, null);

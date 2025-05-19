@@ -1,5 +1,7 @@
 package entities;
 
+import java.awt.image.BufferedImage;
+
 public class Player {
 	private int flapStrengthLevel = 1;
 	private int flapLimitLevel = 1;
@@ -7,6 +9,7 @@ public class Player {
 	private int dragLevel = 1;
 	private int launchLevel = 1;
 	private String name = "";
+	public BufferedImage image;
 	
 	public Player(String name) {
 		this.name = name;
@@ -51,6 +54,7 @@ public class Player {
 	public String getName() {
 		return name;
 	}
+	
 
 	
 }

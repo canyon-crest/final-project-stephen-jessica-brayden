@@ -6,8 +6,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import entities.Player;
+import tile.TileManager;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -15,28 +17,33 @@ import javax.swing.JLabel;
 public class GamePanel extends JPanel implements Runnable{
 	
 	//tile sizing
-	final int originalTileSize = 16;
-	final int scale = 3;
-	final int tileSize = originalTileSize*scale;
-	final int screenWidth = tileSize*16;
-	final int screenHeight = tileSize*12;
+	public final int originalTileSize = 16;
+	public final int scale = 3;
+	public final int tileSize = originalTileSize*scale;
+	public final int screenCol = 16;
+	public final int screenRow = 12;	
+	public final int screenWidth = tileSize*screenCol;
+	public final int screenHeight = tileSize*screenRow;
 	
 	//Game speed
 	int FPS = 30;
 	double scalar = 0.5;
 	
+	TileManager tiles = new TileManager(this);
 	MouseHandler mouse = new MouseHandler();
 	Thread gameThread;
 	
 	
 	//setup player
 	Player player = new Player("player");
-	int playerX = 100;
-	int playerY = 100;
-	double playerXvelo = 1000;
+	public int playerX = 100;
+	public int playerY = 100;
+	double playerXvelo = 100;
 	double playerYvelo = 0;
 	int boostLimit = player.getFlapLimit();
 	double angle;
+	
+	JLabel vOut;
 	
 	
 	public GamePanel() {
@@ -45,6 +52,9 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addMouseListener(mouse);
 		this.addMouseMotionListener(mouse);
+		vOut = new JLabel("X", SwingConstants.CENTER);
+		vOut.setForeground(Color.WHITE);
+		this.add(vOut);
 	}
 
 	public void startGameThread() {
@@ -90,24 +100,17 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Update's game info
 	public void update() {
-		angle = (mouse.y-this.getLocationOnScreen().getY()-75)/50/Math.sqrt(screenWidth^2+screenHeight^2);
-		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-1)*scalar);
-		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(1-Math.abs(angle))*scalar/100);
-		if (mouse.click == true) {
-			playerYvelo += 100*player.getFlapStrength()*scalar*(-angle);
-			playerXvelo += 10*player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
-			boostLimit--;
-		}
-		playerY += (int)playerYvelo;
-		playerX += (int)playerXvelo;
-		System.out.print(playerX+"\r");
-
+		updatePlayerPos();
+		
+		System.out.print(playerX+" "+playerY+" "+playerXvelo+"\r");
+		vOut.setText(playerYvelo+" "+playerXvelo);
 		
 	}
 	//Redraw's components on screen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+		tiles.draw(g2);
 		g2.setColor(Color.white);
 		g2.fillRect(100,100,tileSize,tileSize);
 		/*
@@ -119,4 +122,18 @@ public class GamePanel extends JPanel implements Runnable{
 		
 		g2.dispose();
 	}
+	
+	public void updatePlayerPos() {
+		angle = (mouse.y-this.getLocationOnScreen().getY()-75)/50/Math.sqrt(screenWidth^2+screenHeight^2);
+		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-2)*scalar);
+		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle))*scalar/25);
+		if (mouse.click == true) {
+			playerYvelo += 100*player.getFlapStrength()*scalar*(-angle);
+			playerXvelo += 10*player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
+			boostLimit--;
+		}
+		playerY -= (int)playerYvelo;
+		playerX += (int)playerXvelo;
+	}
+	
 }

@@ -1,5 +1,6 @@
 package Main;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Main {
 	public static void main(String[] args) {
@@ -9,6 +10,7 @@ public class Main {
 		window.setTitle("BirdBrain");
 		
 		GamePanel gamePanel = new GamePanel();
+		//JPanel display = new JPanel();
 		window.add(gamePanel);
 		window.pack();
 		

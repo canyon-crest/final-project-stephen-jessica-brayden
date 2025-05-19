@@ -106,6 +106,8 @@ public class GamePanel extends JPanel implements Runnable{
 		vOut.setText(playerYvelo+" "+playerXvelo);
 		
 	}
+
+	
 	//Redraw's components on screen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

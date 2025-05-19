@@ -104,6 +104,8 @@ public class GamePanel extends JPanel implements Runnable{
 
 		
 	}
+
+	
 	//Redraw's components on screen
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);

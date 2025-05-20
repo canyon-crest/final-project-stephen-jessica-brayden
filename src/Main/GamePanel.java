@@ -38,8 +38,8 @@ public class GamePanel extends JPanel implements Runnable{
 	Player player = new Player("player");
 	public int playerX = 0;
 	public int playerY = 89*tileSize;
-	double playerXvelo = 100;
-	double playerYvelo = 50;
+	public double playerXvelo = 100;
+	public double playerYvelo = 50;
 	public int colPlayer = 0;
 	int boostLimit = player.getFlapLimit();
 	double angle;

@@ -104,7 +104,7 @@ public class GamePanel extends JPanel implements Runnable{
 		updatePlayerPos();
 		
 		
-		vOut.setText("Y: "+-(playerY - 89*tileSize)+" X:"+playerX);
+		vOut.setText("Y: "+-(playerY - 89*tileSize)+" X:"+playerX+" Velocity:"+playerXvelo+" Angle:"+angle);
 		
 	}
 
@@ -118,9 +118,9 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void updatePlayerPos() {
-		angle = (mouse.y-this.getLocationOnScreen().getY()-75)/15/Math.sqrt(screenWidth^2+screenHeight^2);
+		angle = (mouse.y-this.getLocationOnScreen().getY()-100)/25/Math.sqrt(screenWidth^2+screenHeight^2);
 		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-5)*scalar);
-		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle))*scalar/30);
+		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle)+0.1*playerYvelo*Math.sqrt(1-angle*angle))*scalar/30);
 		if (mouse.click) {
 			playerYvelo += player.getFlapStrength()*scalar*(-angle);
 			playerXvelo += player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);

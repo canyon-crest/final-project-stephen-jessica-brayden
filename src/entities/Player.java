@@ -1,6 +1,6 @@
 package entities;
 
-import java.awt.image.BufferedImage;
+import javax.swing.ImageIcon;
 
 public class Player {
 	private int flapStrengthLevel = 1;
@@ -9,7 +9,7 @@ public class Player {
 	private int dragLevel = 1;
 	private int launchLevel = 1;
 	private String name = "";
-	public BufferedImage image;
+	public ImageIcon image = new ImageIcon("images/bird_04.png");
 	
 	public Player(String name) {
 		this.name = name;
@@ -53,6 +53,12 @@ public class Player {
 	}
 	public String getName() {
 		return name;
+	}
+	public void getImage(boolean flap) {
+		if (flap) 
+			image = new ImageIcon("images/bird_04.png");
+		else 
+			image = new ImageIcon("images/bird_00.png");	
 	}
 	
 

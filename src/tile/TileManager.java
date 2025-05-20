@@ -2,6 +2,7 @@ package tile;
 
 
 import java.awt.Graphics2D;
+import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -34,23 +35,22 @@ public class TileManager {
 				//tiles[0] = new Tile();
 				//tiles[0].image = ImageIO.read(getClass().getResourceAsStream(""));
 				tiles[1] = new Tile();
-				tiles[1].image = ImageIO.read(getClass().getResourceAsStream("images/pixelDirt.png"));
+				tiles[1].image = ImageIO.read(new File("images/pixelDirt.png"));
 				//tiles[2] = new Tile();
 				//tiles[2].image = ImageIO.read(getClass().getResourceAsStream(""));
 				tiles[3] = new Tile();
-				tiles[3].image = ImageIO.read(getClass().getResourceAsStream("images/pixelSky.jpeg"));
+				tiles[3].image = ImageIO.read(new File("images/pixelSky.jpeg"));
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
 	}
 	
 	public void draw(Graphics2D g2) {
-		int col = 0;
+		int col = gp.colPlayer-gp.screenCol;
 		int row = 0;
 		
 		
-		
-		while (col<100 && row<gp.screenRow) {
+		while (col<gp.colPlayer+gp.screenCol && row<100) {
 			int worldX = col*gp.tileSize;
 			int worldY = row*gp.tileSize;
 			int screenX = worldX - gp.playerX + gp.screenWidth/2;

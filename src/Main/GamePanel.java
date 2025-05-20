@@ -36,10 +36,11 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//setup player
 	Player player = new Player("player");
-	public int playerX = 100;
-	public int playerY = 100;
+	public int playerX = 0;
+	public int playerY = 89*tileSize;
 	double playerXvelo = 100;
-	double playerYvelo = 0;
+	double playerYvelo = 50;
+	public int colPlayer = 0;
 	int boostLimit = player.getFlapLimit();
 	double angle;
 	
@@ -102,8 +103,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update() {
 		updatePlayerPos();
 		
-		System.out.print(playerX+" "+playerY+" "+playerXvelo+"\r");
-		vOut.setText(playerYvelo+" "+playerXvelo);
+		
+		vOut.setText("Y: "+-(playerY - 89*tileSize)+" X:"+playerX);
 		
 	}
 
@@ -113,29 +114,27 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 		tiles.draw(g2);
-		g2.setColor(Color.white);
-		g2.fillRect(100,100,tileSize,tileSize);
-		/*
-		ImageIcon image1 = new ImageIcon("images/bird_00.png");
-		g2.drawImage(image1.getImage(), 400, 200, 100, 100, null);
-		ImageIcon image2 = new ImageIcon("images/bird_04.png");
-		g2.drawImage(image2.getImage(), 500, 200, 100, 100, null);
-		*/
-		
-		g2.dispose();
+		g2.drawImage(player.image.getImage(), screenWidth/2,screenHeight/2,tileSize,tileSize, null);
 	}
 	
 	public void updatePlayerPos() {
-		angle = (mouse.y-this.getLocationOnScreen().getY()-75)/50/Math.sqrt(screenWidth^2+screenHeight^2);
-		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-2)*scalar);
-		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle))*scalar/25);
-		if (mouse.click == true) {
-			playerYvelo += 100*player.getFlapStrength()*scalar*(-angle);
-			playerXvelo += 10*player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
+		angle = (mouse.y-this.getLocationOnScreen().getY()-75)/15/Math.sqrt(screenWidth^2+screenHeight^2);
+		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-5)*scalar);
+		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle))*scalar/30);
+		if (mouse.click) {
+			playerYvelo += player.getFlapStrength()*scalar*(-angle);
+			playerXvelo += player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
 			boostLimit--;
 		}
+		player.getImage(mouse.click);
 		playerY -= (int)playerYvelo;
 		playerX += (int)playerXvelo;
+		if(playerY>89*tileSize){
+			playerY  = 89*tileSize;
+			playerYvelo = 0;
+			playerXvelo-=playerXvelo*player.getDrag()/30;
+		}
+		colPlayer = playerX/tileSize;
 	}
 	
 }

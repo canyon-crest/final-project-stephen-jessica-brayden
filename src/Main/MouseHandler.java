@@ -18,7 +18,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		x = e.getX();
 		y = e.getY();
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			click = true;
+			click = false;
 		}
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			click = false;
@@ -46,7 +46,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			click = true;
+			click = false;
 		}
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			click = false;
@@ -61,7 +61,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			click = false;
 		}
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			click = true;
+			click = false;
 		}
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			click = false;
@@ -135,7 +135,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		x = e.getX();
 		y = e.getY();
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			click = true;
+			click = false;
 		}
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			click = false;
@@ -150,7 +150,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			click = false;
 		}
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			click = true;
+			click = false;
 		}
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			click = false;
@@ -167,7 +167,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		x = e.getX();
 		y = e.getY();
 		if (e.getButton() == MouseEvent.BUTTON1) {
-			click = true;
+			click = false;
 		}
 		if (e.getButton() == MouseEvent.BUTTON3) {
 			click = false;
@@ -182,7 +182,7 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 			click = false;
 		}
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			click = true;
+			click = false;
 		}
 		if (SwingUtilities.isMiddleMouseButton(e)) {
 			click = false;

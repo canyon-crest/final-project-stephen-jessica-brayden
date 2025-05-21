@@ -4,10 +4,13 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+import entities.Obstacles;
 import entities.Player;
 import tile.TileManager;
 
@@ -24,6 +27,8 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int screenRow = 12;	
 	public final int screenWidth = tileSize*screenCol;
 	public final int screenHeight = tileSize*screenRow;
+	private Runnable gameOverListener;
+
 	
 	//Game speed
 	int FPS = 30;
@@ -38,15 +43,17 @@ public class GamePanel extends JPanel implements Runnable{
 	Player player = new Player("player");
 	public int playerX = 0;
 	public int playerY = 89*tileSize;
-	double playerXvelo = 100;
-	double playerYvelo = 50;
+	double playerXvelo = 0;
+	double playerYvelo = 0;
 	public int colPlayer = 0;
 	int boostLimit = player.getFlapLimit();
 	double angle;
-	
+	public boolean showLaunchLine = true;
 	JLabel vOut;
+
 	
-	
+	private List<Obstacles> obstacles = new ArrayList<>();
+
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
@@ -99,10 +106,43 @@ public class GamePanel extends JPanel implements Runnable{
 		
 	}
 	
+		
+	public void setGameOverListener(Runnable listener) {
+		this.gameOverListener = listener;
+	}
+
+		
+	// Call this method when the game ends
+	private void triggerGameOver() {
+		if (gameOverListener != null) {
+			gameOverListener.run();
+		}
+	}
+	
+	public Player getPlayer() {
+		return this.player; 
+	}
+
+	private void checkCollisions() {
+        // Check if the player hits the ground
+        if (playerY > 89 * tileSize) {
+            triggerGameOver();
+        }
+
+        // Check if the player collides with any obstacle
+        for (Obstacles obstacle : obstacles) {
+            if (obstacle.collidesWith(playerX, playerY, tileSize, tileSize)) {
+                triggerGameOver();
+                break;
+            }
+        }
+    }
+	
 	//Update's game info
 	public void update() {
 		updatePlayerPos();
-		
+		checkCollisions(); 
+
 		
 		vOut.setText("Y: "+-(playerY - 89*tileSize)+" X:"+playerX+" Velocity:"+playerXvelo+" Angle:"+angle);
 		
@@ -113,11 +153,32 @@ public class GamePanel extends JPanel implements Runnable{
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
+
+		for (Obstacles obstacle : obstacles) {
+            g2.fillRect(obstacle.getBounds().x, obstacle.getBounds().y, obstacle.getBounds().width, obstacle.getBounds().height);
+        }
+
 		tiles.draw(g2);
 		g2.drawImage(player.image.getImage(), screenWidth/2,screenHeight/2,tileSize,tileSize, null);
+
+		if (showLaunchLine) {
+			int startX = screenWidth / 2 + tileSize / 2; // Center of the player
+			int startY = screenHeight / 2 + tileSize / 2;
+			int endX = mouse.x; // Use the mouse's x position
+			int endY = mouse.y; // Use the mouse's y position
+
+			g2.setColor(Color.BLACK); // Set the line color
+			g2.drawLine(startX, startY, endX, endY); 
+		}
 	}
 	
 	public void updatePlayerPos() {
+		if (showLaunchLine && mouse.click) {
+			playerXvelo = 100; 
+			playerYvelo = 50;
+			showLaunchLine = false;
+		}
+
 		angle = (mouse.y-this.getLocationOnScreen().getY()-100)/25/Math.sqrt(screenWidth^2+screenHeight^2);
 		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-5)*scalar);
 		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle)+0.1*playerYvelo*Math.sqrt(1-angle*angle))*scalar/30);

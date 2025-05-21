@@ -17,18 +17,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 		// TODO Auto-generated method stub
 		x = e.getX();
 		y = e.getY();
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			click = false;
-		}
-		if (e.getButton() == MouseEvent.BUTTON3) {
-			click = false;
-		}
-		if (e.getButton() == MouseEvent.BUTTON2) {
-			click = false;
-		}
-		if (e.getButton() == MouseEvent.NOBUTTON) {
-			click = false;
-		}
 	
 
 		

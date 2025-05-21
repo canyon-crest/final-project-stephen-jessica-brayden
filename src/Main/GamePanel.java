@@ -1,5 +1,6 @@
 package Main;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -61,9 +62,14 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addMouseListener(mouse);
 		this.addMouseMotionListener(mouse);
+		
+		this.setLayout(new BorderLayout());
 		vOut = new JLabel("X", SwingConstants.CENTER);
 		vOut.setForeground(Color.WHITE);
-		this.add(vOut);
+		this.add(vOut, BorderLayout.NORTH);
+		
+		UpgradeMenu upgrade = new UpgradeMenu(player);
+		this.add(upgrade, BorderLayout.SOUTH);
 	}
 
 	public void startGameThread() {
@@ -145,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable{
 		checkCollisions(); 
 
 		
-		vOut.setText("Y: "+-(playerY - 89*tileSize)+" X:"+playerX+" Velocity:"+playerXvelo+" Angle:"+angle);
+		vOut.setText("Y: " + String.format("%9d" , -(playerY - 89*tileSize)) + "   X:" + String.format("%9d" , playerX) + "   Velocity:" + String.format("%12.2f" , playerXvelo) + "   Angle:" + String.format("%12.2f" , angle));
 		
 	}
 

@@ -44,8 +44,11 @@ public class GamePanel extends JPanel implements Runnable{
 	Player player = new Player("player");
 	public int playerX = 0;
 	public int playerY = 89*tileSize;
-	double playerXvelo = 0;
-	double playerYvelo = 0;
+	public double playerXvelo = 0;
+	public double playerYvelo = 0;
+	private double launchAcceleration = 2;
+	private double maxLaunchSpeed = 100;
+	private boolean isLaunching = false;
 
 	public int colPlayer = 0;
 	int boostLimit = player.getFlapLimit();
@@ -53,6 +56,10 @@ public class GamePanel extends JPanel implements Runnable{
 	public boolean showLaunchLine = true;
 	JLabel vOut;
 
+	private int score = 0;
+	private int launchDelayCounter = 0; 
+	private final int LAUNCH_DELAY = 30; 
+	private boolean launchDone = false;
 	
 	private List<Obstacles> obstacles = new ArrayList<>();
 
@@ -139,7 +146,7 @@ public class GamePanel extends JPanel implements Runnable{
         // Check if the player collides with any obstacle
         for (Obstacles obstacle : obstacles) {
             if (obstacle.collidesWith(playerX, playerY, tileSize, tileSize)) {
-                triggerGameOver();
+                obstacle.effect();
                 break;
             }
         }
@@ -151,7 +158,7 @@ public class GamePanel extends JPanel implements Runnable{
 		checkCollisions(); 
 
 		
-		vOut.setText("Y: " + String.format("%9d" , -(playerY - 89*tileSize)) + "   X:" + String.format("%9d" , playerX) + "   Velocity:" + String.format("%12.2f" , playerXvelo) + "   Angle:" + String.format("%12.2f" , angle));
+		vOut.setText("Y: " + String.format("%9d" , -(playerY - 89*tileSize)) + "   X:" + String.format("%9d" , playerX) + "   Velocity:" + String.format("%12.2f" , playerXvelo) + "   Angle:" + String.format("%12.2f" , angle) + "  Score: " + score);
 		
 	}
 
@@ -176,27 +183,61 @@ public class GamePanel extends JPanel implements Runnable{
 
 			g2.setColor(Color.BLACK); // Set the line color
 			g2.drawLine(startX, startY, endX, endY); 
+
+			g2.setFont(g2.getFont().deriveFont(48f)); // Set font size to 48
+			g2.setColor(Color.BLACK); // Set text color
+			String launchText = "Launch the Bird!";
+			int textWidth = g2.getFontMetrics().stringWidth(launchText);
+			int textX = (screenWidth - textWidth) / 2; // Center the text horizontally
+			int textY = screenHeight / 4; // Position the text near the top
+			g2.drawString(launchText, textX, textY);
 		}
 	}
 	
 	public void updatePlayerPos() {
 		if (showLaunchLine && mouse.click) {
-			playerXvelo = 100; 
-			playerYvelo = 50;
+			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 2));
+			
+			playerXvelo = launchAcceleration * Math.cos(launchAngle); 
+			playerYvelo = -launchAcceleration * Math.sin(launchAngle); 
+			
 			showLaunchLine = false;
+			isLaunching = true; 
+		}
+	
+		if (isLaunching) {
+			double speed = Math.sqrt(playerXvelo * playerXvelo + playerYvelo * playerYvelo);
+			if (speed < maxLaunchSpeed) {
+				playerXvelo += launchAcceleration * (playerXvelo / speed); 
+				playerYvelo += launchAcceleration * (playerYvelo / speed); 
+			} else {
+				isLaunching = false; // End the launch phase when max speed is reached
+			}
+	
+			player.getImage(true); // Assume `true` triggers the flapping animation
+		} else {
+
+			angle = (mouse.y - this.getLocationOnScreen().getY() - 100) / 25 / Math.sqrt(screenWidth ^ 2 + screenHeight ^ 2);
+			playerYvelo = ((playerYvelo - 0.5 * playerXvelo * player.getLift() * (angle) - 5) * scalar);
+			playerXvelo = (playerXvelo - playerXvelo * player.getDrag() * (Math.abs(angle) + 0.1 * playerYvelo * Math.sqrt(1 - angle * angle)) * scalar / 30);
+			if (mouse.click) {
+				playerYvelo += player.getFlapStrength() * scalar * (-angle);
+				playerXvelo += player.getFlapStrength() * scalar * Math.sqrt(1 - angle * angle);
+				boostLimit--;
+			}
+			player.getImage(mouse.click);
 		}
 
-		angle = (mouse.y-this.getLocationOnScreen().getY()-100)/25/Math.sqrt(screenWidth^2+screenHeight^2);
-		playerYvelo = ((playerYvelo-0.5*playerXvelo*player.getLift()*(angle)-5)*scalar);
-		playerXvelo = (playerXvelo-playerXvelo*player.getDrag()*(Math.abs(angle)+0.1*playerYvelo*Math.sqrt(1-angle*angle))*scalar/30);
-		if (mouse.click) {
-			playerYvelo += player.getFlapStrength()*scalar*(-angle);
-			playerXvelo += player.getFlapStrength()*scalar*Math.sqrt(1-angle*angle);
-			boostLimit--;
-		}
-		player.getImage(mouse.click);
 		playerY -= (int)playerYvelo;
 		playerX += (int)playerXvelo;
+
+		score = Math.max(score, playerX/500);
+		if (playerX<0){
+			playerX = 0;
+			playerXvelo = 0;
+			playerYvelo-=playerYvelo*player.getDrag()/30;
+		}
+
 		if(playerY>89*tileSize){
 			playerY  = 89*tileSize;
 			playerYvelo = 0;

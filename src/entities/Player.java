@@ -1,4 +1,5 @@
 package entities;
+import java.awt.Image;
 
 import javax.swing.ImageIcon;
 
@@ -10,6 +11,8 @@ public class Player {
 	private int launchLevel = 1;
 	private String name = "";
 	public ImageIcon image = new ImageIcon("images/bird_04.png");
+	private int flapCounter = 0;
+	private final int FLAP_INTERVAL = 8; 
 	
 	public Player(String name) {
 		this.name = name;
@@ -54,13 +57,30 @@ public class Player {
 	public String getName() {
 		return name;
 	}
-	public void getImage(boolean flap) {
-		if (flap) 
-			image = new ImageIcon("images/bird_04.png");
-		else 
-			image = new ImageIcon("images/bird_00.png");	
-	}
 	
+	public void getImage(boolean flap) {
+		if (flap) {
+			// Increment the flap counter
+			flapCounter++;
+	
+			// Toggle the image based on the flap interval
+			if (flapCounter % (2 * FLAP_INTERVAL) < FLAP_INTERVAL) {
+				image = new ImageIcon("images/bird_04.png"); // Flapping image
+			} else {
+				image = new ImageIcon("images/bird_00.png"); // Idle image
+			}
+		} else {
+			ImageIcon idleIcon = new ImageIcon("images/bird_01.png");
+			Image resizedImage = idleIcon.getImage().getScaledInstance(
+				200, 
+				200, 
+				Image.SCALE_SMOOTH 
+			);
+			image = new ImageIcon(resizedImage);
+			System.out.println("Resized image to: " + 200 + "x" + 200);
+			flapCounter = 0;
+		}
+	}
 
 	
 }

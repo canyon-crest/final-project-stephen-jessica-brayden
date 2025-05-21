@@ -11,16 +11,10 @@ public class Obstacles {
 	protected GamePanel gp;
 	public int x;
 	public int y;
-
+	public int width;
+	public int height;
 	
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, width, height);
-    }
-
-    public boolean collidesWith(int playerX, int playerY, int playerWidth, int playerHeight) {
-        Rectangle playerBounds = new Rectangle(playerX, playerY, playerWidth, playerHeight);
-        return playerBounds.intersects(getBounds());
-    }
+ 
 	
 	public Obstacles(String type, GamePanel gp, int x, int y) {
 		this.type = type;
@@ -30,7 +24,17 @@ public class Obstacles {
 	public void effect() {}
 	
 	public void move() {}
+
+	public Rectangle getBounds() {
+        return new Rectangle(x, y, width, height);
+    }
+
+    public boolean collidesWith(int playerX, int playerY, int playerWidth, int playerHeight) {
+        Rectangle playerBounds = new Rectangle(playerX, playerY, playerWidth, playerHeight);
+        return playerBounds.intersects(getBounds());
+    }
 }
+
 
 class Bat extends Obstacles {
 	public Bat(GamePanel gp, int x, int y) {

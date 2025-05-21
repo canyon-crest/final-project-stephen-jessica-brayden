@@ -21,6 +21,12 @@ public class TileManager {
 		for (int i = 0; i<colLayout.length;i++) {
 			if (i<90) {
 				colLayout[i] = 3;
+				if (i%15==0 || i%15==1) {
+					colLayout[i] = 2;
+				}
+			}
+			else if (i==90){
+				colLayout[i] = 0;
 			}
 			else {
 				colLayout[i] = 1;
@@ -32,14 +38,14 @@ public class TileManager {
 	
 	public void getTileImage() {
 			try {
-				//tiles[0] = new Tile();
-				//tiles[0].image = ImageIO.read(getClass().getResourceAsStream(""));
+				tiles[0] = new Tile();
+				tiles[0].image = ImageIO.read(new File("images/customGrass.png"));
 				tiles[1] = new Tile();
-				tiles[1].image = ImageIO.read(new File("images/pixelDirt.png"));
-				//tiles[2] = new Tile();
-				//tiles[2].image = ImageIO.read(getClass().getResourceAsStream(""));
+				tiles[1].image = ImageIO.read(new File("images/customDirt.png"));
+				tiles[2] = new Tile();
+				tiles[2].image = ImageIO.read(new File("images/cloud.png"));
 				tiles[3] = new Tile();
-				tiles[3].image = ImageIO.read(new File("images/pixelSky.jpeg"));
+				tiles[3].image = ImageIO.read(new File("images/sky.png"));
 			} catch(IOException e) {
 				e.printStackTrace();
 			}

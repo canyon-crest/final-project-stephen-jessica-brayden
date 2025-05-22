@@ -105,16 +105,7 @@ public class GamePanel extends JPanel implements Runnable{
 			update();
 			
 			repaint();
-			
-			// TODO Auto-generated method stub
-			double drawInterval = 1000000000/FPS;
-			double nextTime = System.nanoTime()+drawInterval;
-			try {
-				Thread.sleep((long) 1000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+
 			while (gameThread != null) {
 				update();
 				
@@ -207,10 +198,11 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 
 		tiles.draw(g2);
-		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,tileSize,tileSize, null);
 		for (Obstacles obstacle : obstacles) {
 			g2.drawImage(obstacle.getOImage().getImage(), obstacle.x, obstacle.y, tileSize, tileSize, null);
         }
+		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,tileSize,tileSize, null);
+
 
 		if (showLaunchLine) {
 			int startX = screenWidth / 4 + tileSize / 2; // Center of the player
@@ -302,8 +294,8 @@ public class GamePanel extends JPanel implements Runnable{
 		else if (rng<0.015) {
 			obstacles.add(new Bat(this, playerX+2*screenWidth,playerY));
 		}
-		else if (rng<0.02) {
-			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY+tileSize));
+		else if (rng<0.025) {
+			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-3+(int)(6*(Math.random()*tileSize))));
 		}
 	}
 	

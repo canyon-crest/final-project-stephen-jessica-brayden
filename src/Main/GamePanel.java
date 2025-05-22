@@ -42,13 +42,14 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//setup player
 	Player player = new Player("player");
-	public int playerX = 0;
+	public int playerX = screenWidth/4;
 	public int playerY = 89*tileSize;
 	public double playerXvelo = 0;
 	public double playerYvelo = 0;
 	private double launchAcceleration = 2;
 	private double maxLaunchSpeed = 100;
 	private boolean isLaunching = false;
+
 
 	public int colPlayer = 0;
 	int boostLimit = player.getFlapLimit();
@@ -158,7 +159,7 @@ public class GamePanel extends JPanel implements Runnable{
 		checkCollisions(); 
 
 		
-		vOut.setText("Y: " + String.format("%9d" , -(playerY - 89*tileSize)) + "   X:" + String.format("%9d" , playerX) + "   Velocity:" + String.format("%12.2f" , playerXvelo) + "   Angle:" + String.format("%12.2f" , angle) + "  Score: " + score);
+		vOut.setText("Y: " + String.format("%9d" , -(playerY - 89*tileSize)) + "   X:" + String.format("%9d" , playerX-screenWidth/4) + "   Velocity:" + String.format("%12.2f" , playerXvelo) + "   Angle:" + String.format("%12.2f" , angle) + "  Score: " + score);
 		
 	}
 
@@ -173,10 +174,10 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
 		tiles.draw(g2);
-		g2.drawImage(player.image.getImage(), screenWidth/2,screenHeight/2,tileSize,tileSize, null);
+		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,tileSize,tileSize, null);
 
 		if (showLaunchLine) {
-			int startX = screenWidth / 2 + tileSize / 2; // Center of the player
+			int startX = screenWidth / 4 + tileSize / 2; // Center of the player
 			int startY = screenHeight / 2 + tileSize / 2;
 			int endX = mouse.x; // Use the mouse's x position
 			int endY = mouse.y; // Use the mouse's y position
@@ -219,7 +220,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 			angle = (mouse.y - this.getLocationOnScreen().getY() - 100) / 25 / Math.sqrt(screenWidth ^ 2 + screenHeight ^ 2);
 			playerYvelo = ((playerYvelo - 0.5 * playerXvelo * player.getLift() * (angle) - 5) * scalar);
-			playerXvelo = (playerXvelo - playerXvelo * player.getDrag() * (Math.abs(angle) + 0.1 * playerYvelo * Math.sqrt(1 - angle * angle)) * scalar / 30);
+			playerXvelo = playerXvelo - (playerXvelo * player.getDrag() * Math.abs(angle) + playerYvelo * Math.sqrt(1 - angle * angle)) * scalar/20;
 			if (mouse.click) {
 				playerYvelo += player.getFlapStrength() * scalar * (-angle);
 				playerXvelo += player.getFlapStrength() * scalar * Math.sqrt(1 - angle * angle);
@@ -227,6 +228,7 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 			player.getImage(mouse.click);
 		}
+
 
 		playerY -= (int)playerYvelo;
 		playerX += (int)playerXvelo;

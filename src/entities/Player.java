@@ -4,6 +4,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Player {
+	private int gameCurrency = 100;
 	private int flapStrengthLevel = 1;
 	private int flapLimitLevel = 1;
 	private int liftLevel = 1;
@@ -19,11 +20,17 @@ public class Player {
 	}
 
 	public void upgradeFlapStrength() {
-		flapStrengthLevel++;
+		if(gameCurrency >= 20) {
+			gameCurrency -= 20;
+			flapStrengthLevel++;
+		}
 	}
 	
 	public void upgradeFlapLimit() {
-		flapLimitLevel++;
+		if(gameCurrency >= 30) {
+			gameCurrency -= 30;
+			flapLimitLevel++;
+		}
 	}
 	
 	public void upgradeLift() {
@@ -36,6 +43,10 @@ public class Player {
 	
 	public void upgradeLaunch() {
 		launchLevel++;
+	}
+	
+	public int getCurrency() {
+		return gameCurrency;
 	}
 	
 	public double getFlapStrength() {

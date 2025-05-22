@@ -93,8 +93,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		//Game time
-		double drawInterval = 1000000000/FPS;
-		double nextTime = System.nanoTime()+drawInterval;
+		
 		try {
 			Thread.sleep((long) 1000);
 		} catch (InterruptedException e) {
@@ -182,6 +181,7 @@ public class GamePanel extends JPanel implements Runnable{
 	    for (Obstacles obstacle : obstacles) {
 	        if (obstacle.x < playerX - screenWidth || obstacle.triggered) {
 	            toRemove.add(obstacle);
+				System.out.println("Removing obstacle at x=" + obstacle.x + ", triggered=" + obstacle.triggered);
 	        }
 	        else {
 	        	obstacle.move();
@@ -209,7 +209,8 @@ public class GamePanel extends JPanel implements Runnable{
 		tiles.draw(g2);
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,tileSize,tileSize, null);
 		for (Obstacles obstacle : obstacles) {
-			g2.drawImage(obstacle.getOImage().getImage(), obstacle.x, obstacle.y, tileSize, tileSize, null);
+			System.out.println("Drawing obstacle at x=" + obstacle.x + ", y=" + obstacle.y);
+			g2.drawImage(obstacle.getOImage().getImage(), obstacle.getX(), obstacle.getY(), tileSize, tileSize, null);
         }
 
 		if (showLaunchLine) {
@@ -296,14 +297,19 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void addObstacles() {
 		double rng = Math.random();
-		if (rng<0.01) {
-			obstacles.add(new Mushroom(this, playerX+2*screenWidth));
-		}
-		else if (rng<0.015) {
-			obstacles.add(new Bat(this, playerX+2*screenWidth,playerY));
-		}
-		else if (rng<0.02) {
-			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY+tileSize));
+	
+		int groundLevel = 89 * tileSize; // Ground level
+		int obstacleHeight = tileSize; // Height of obstacles
+	
+		if (rng < 0.01) {
+			// Place the Mushroom near the ground
+			obstacles.add(new Mushroom(this, playerX + 2 * screenWidth));
+		} else if (rng < 0.015) {
+			// Place the Bat at a mid-air level
+			obstacles.add(new Bat(this, playerX + 2 * screenWidth, groundLevel - 5 * tileSize));
+		} else if (rng < 0.02) {
+			// Place the WindBoost slightly above the ground
+			obstacles.add(new WindBoost(this, playerX + 2 * screenWidth, groundLevel - 2 * tileSize));
 		}
 	}
 	

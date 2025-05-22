@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public final int screenWidth = tileSize*screenCol;
 	public final int screenHeight = tileSize*screenRow;
 	private Runnable gameOverListener;
+	private boolean gameOver = false;
 
 	
 	//Game speed
@@ -87,37 +88,40 @@ public class GamePanel extends JPanel implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		double drawInterval = 1000000000/FPS;
-		double nextTime = System.nanoTime()+drawInterval;
-		try {
-			Thread.sleep((long) 1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		while (gameThread != null) {
-			update();
+		while(!gameOver) {
 			
-			repaint();
-			
+			// TODO Auto-generated method stub
+			double drawInterval = 1000000000/FPS;
+			double nextTime = System.nanoTime()+drawInterval;
 			try {
-				double remainingTime = nextTime- System.nanoTime();
-				remainingTime = remainingTime/1000000;
-				
-				if(remainingTime <0) {
-					remainingTime = 0;
-				}
-				
-				Thread.sleep((long) remainingTime);
-				
-				nextTime += drawInterval;
+				Thread.sleep((long) 1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			
+			while (gameThread != null) {
+				update();
+				
+				repaint();
+				
+				try {
+					double remainingTime = nextTime- System.nanoTime();
+					remainingTime = remainingTime/1000000;
+					
+					if(remainingTime <0) {
+						remainingTime = 0;
+					}
+					
+					Thread.sleep((long) remainingTime);
+					
+					nextTime += drawInterval;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
+		
 		
 	}
 	
@@ -131,6 +135,7 @@ public class GamePanel extends JPanel implements Runnable{
 	private void triggerGameOver() {
 		if (gameOverListener != null) {
 			gameOverListener.run();
+			gameOver = true;
 		}
 	}
 	
@@ -142,6 +147,7 @@ public class GamePanel extends JPanel implements Runnable{
         // Check if the player hits the ground
         if (playerY > 89 * tileSize) {
             triggerGameOver();
+			return;
         }
 
         // Check if the player collides with any obstacle
@@ -179,10 +185,10 @@ public class GamePanel extends JPanel implements Runnable{
 		if (showLaunchLine) {
 			int startX = screenWidth / 4 + tileSize / 2; // Center of the player
 			int startY = screenHeight / 2 + tileSize / 2;
-			int endX = mouse.x; // Use the mouse's x position
-			int endY = mouse.y; // Use the mouse's y position
+			int endX = mouse.x; 
+			int endY = mouse.y; 
 
-			g2.setColor(Color.BLACK); // Set the line color
+			g2.setColor(Color.BLACK);
 			g2.drawLine(startX, startY, endX, endY); 
 
 			g2.setFont(g2.getFont().deriveFont(48f)); // Set font size to 48
@@ -192,6 +198,16 @@ public class GamePanel extends JPanel implements Runnable{
 			int textX = (screenWidth - textWidth) / 2; // Center the text horizontally
 			int textY = screenHeight / 4; // Position the text near the top
 			g2.drawString(launchText, textX, textY);
+		}
+
+		if (gameOver) {
+			g2.setFont(g2.getFont().deriveFont(48f));
+			g2.setColor(Color.RED);
+			String gameOverText = "Game Over!";
+			int textWidth = g2.getFontMetrics().stringWidth(gameOverText);
+			int textX = (screenWidth - textWidth) / 2;
+			int textY = screenHeight / 2;
+			g2.drawString(gameOverText, textX, textY);
 		}
 	}
 	
@@ -212,10 +228,10 @@ public class GamePanel extends JPanel implements Runnable{
 				playerXvelo += launchAcceleration * (playerXvelo / speed); 
 				playerYvelo += launchAcceleration * (playerYvelo / speed); 
 			} else {
-				isLaunching = false; // End the launch phase when max speed is reached
+				isLaunching = false; 
 			}
 	
-			player.getImage(true); // Assume `true` triggers the flapping animation
+			player.getImage(true); 
 		} else {
 
 			angle = (mouse.y - this.getLocationOnScreen().getY() - 100) / 25 / Math.sqrt(screenWidth ^ 2 + screenHeight ^ 2);

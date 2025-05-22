@@ -54,7 +54,7 @@ class Bat extends Obstacles {
 		else {
 			y+=gp.tileSize;
 		}
-		x+=100;
+		x+=(int)(gp.playerXvelo/2);
 	}
 }
 

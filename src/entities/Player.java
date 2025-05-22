@@ -88,7 +88,7 @@ public class Player {
 				Image.SCALE_SMOOTH 
 			);
 			image = new ImageIcon(resizedImage);
-			System.out.println("Resized image to: " + 200 + "x" + 200);
+			//System.out.println("Resized image to: " + 200 + "x" + 200);
 			flapCounter = 0;
 		}
 	}

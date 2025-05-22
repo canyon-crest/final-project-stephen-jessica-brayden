@@ -15,6 +15,7 @@ public class Obstacles {
 	public int width;
 	public int height;
 	public ImageIcon image;
+	public boolean triggered = false;
  
 	
 	public Obstacles(String type, GamePanel gp, int x, int y) {
@@ -22,9 +23,11 @@ public class Obstacles {
 		this.gp = gp;
 		this.x = x;
 		this.y = y;
+		width = gp.tileSize;
+		height = gp.tileSize;
 	}
 	
-	public void effect() {}
+	public void effect() {triggered = true;}
 	
 	public void move() {}
 
@@ -33,51 +36,24 @@ public class Obstacles {
     }
 
     public boolean collidesWith(int playerX, int playerY, int playerWidth, int playerHeight) {
-        Rectangle playerBounds = new Rectangle(playerX, playerY, playerWidth, playerHeight);
+        Rectangle playerBounds = new Rectangle(gp.playerX, gp.playerY, gp.tileSize, gp.tileSize);
         return playerBounds.intersects(getBounds());
+    }
+    public ImageIcon getOImage() {
+    	if (type.equals("bat"))
+    		image = new ImageIcon("images/bat.png");
+    	else if (type.equals("windBoost"))
+    		image = new ImageIcon("images/windboost.png");
+    	else if (type.equals("mushroom"))
+    		image = new ImageIcon("images/mushroom.png");
+    	return image;
     }
 }
 
 
-class Bat extends Obstacles {
-	public Bat(GamePanel gp, int x, int y) {
-		super("bat", gp, x, y);
-		this.image = new ImageIcon("images/bat.png");
-	}
-	public void effect() {
-		gp.playerXvelo/=2;
-	}
-	public void move() {
-		if (gp.playerY<y) {
-			y-=gp.tileSize;
-		}
-		else {
-			y+=gp.tileSize;
-		}
-		x+=(int)(gp.playerXvelo/2);
-	}
-}
 
 
-class WindBoost extends Obstacles {
-	public WindBoost(GamePanel gp, int x, int y) {
-		super("windBoost", gp, x, y);
-		this.image = new ImageIcon("images/windboost.png");
-	}
-	public void effect() {
-		gp.playerYvelo+=100;
-		gp.playerXvelo+=100;
-	}
-}
 
 
-class Mushroom extends Obstacles {
-	public Mushroom(GamePanel gp, int x) {
-		super("mushroom", gp, x, 89*gp.tileSize);
-		this.image = new ImageIcon("images/mushroom.png");
-	}
-	public void effect() {
-		gp.playerYvelo*=-1;
-	}
-}
+
 

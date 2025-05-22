@@ -13,6 +13,9 @@ import javax.swing.SwingConstants;
 
 import entities.Obstacles;
 import entities.Player;
+import entities.Mushroom;
+import entities.Bat;
+import entities.WindBoost;
 import tile.TileManager;
 
 import javax.swing.ImageIcon;
@@ -88,6 +91,7 @@ public class GamePanel extends JPanel implements Runnable{
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
+		//Game time
 		double drawInterval = 1000000000/FPS;
 		double nextTime = System.nanoTime()+drawInterval;
 		try {
@@ -140,7 +144,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 	private void checkCollisions() {
         // Check if the player hits the ground
-        if (playerY > 89 * tileSize) {
+        if (playerY >= 89 * tileSize && launchDone) {
             triggerGameOver();
         }
 
@@ -155,12 +159,27 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	//Update's game info
 	public void update() {
-		updatePlayerPos();
-		checkCollisions(); 
+		addObstacles();
+		List<Obstacles> toRemove = new ArrayList<>();
+	    for (Obstacles obstacle : obstacles) {
+	        if (obstacle.x < playerX - screenWidth || obstacle.triggered) {
+	            toRemove.add(obstacle);
+	        }
+	        else {
+	        	obstacle.move();
+	        }
+	    }
+	    obstacles.removeAll(toRemove);
 
-		
-		vOut.setText("Y: " + String.format("%9d" , -(playerY - 89*tileSize)) + "   X:" + String.format("%9d" , playerX-screenWidth/4) + "   Velocity:" + String.format("%12.2f" , playerXvelo) + "   Angle:" + String.format("%12.2f" , angle) + "  Score: " + score);
-		
+	    
+	    updatePlayerPos();
+	    checkCollisions();
+
+	    vOut.setText("Y: " + String.format("%9d", -(playerY - 89 * tileSize)) +
+	        "   X:" + String.format("%9d", playerX - screenWidth / 4) +
+	        "   Velocity:" + String.format("%12.2f", playerXvelo) +
+	        "   Angle:" + String.format("%12.2f", angle) +
+	        "  Score: " + score);
 	}
 
 	
@@ -169,12 +188,11 @@ public class GamePanel extends JPanel implements Runnable{
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
 
-		for (Obstacles obstacle : obstacles) {
-            g2.fillRect(obstacle.getBounds().x, obstacle.getBounds().y, obstacle.getBounds().width, obstacle.getBounds().height);
-        }
-
 		tiles.draw(g2);
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,tileSize,tileSize, null);
+		for (Obstacles obstacle : obstacles) {
+			g2.drawImage(obstacle.getOImage().getImage(), obstacle.x, obstacle.y, tileSize, tileSize, null);
+        }
 
 		if (showLaunchLine) {
 			int startX = screenWidth / 4 + tileSize / 2; // Center of the player
@@ -207,7 +225,7 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	
 		if (isLaunching) {
-			double speed = Math.sqrt(playerXvelo * playerXvelo + playerYvelo * playerYvelo);
+			double speed = player.getLaunch()*Math.sqrt(playerXvelo * playerXvelo + playerYvelo * playerYvelo);
 			if (speed < maxLaunchSpeed) {
 				playerXvelo += launchAcceleration * (playerXvelo / speed); 
 				playerYvelo += launchAcceleration * (playerYvelo / speed); 
@@ -243,9 +261,22 @@ public class GamePanel extends JPanel implements Runnable{
 		if(playerY>89*tileSize){
 			playerY  = 89*tileSize;
 			playerYvelo = 0;
-			playerXvelo-=playerXvelo*player.getDrag()/30;
+			playerXvelo-=playerXvelo*player.getDrag()/10;
 		}
 		colPlayer = playerX/tileSize;
+	}
+	
+	public void addObstacles() {
+		double rng = Math.random();
+		if (rng<0.01) {
+			obstacles.add(new Mushroom(this, playerX+2*screenWidth));
+		}
+		else if (rng<0.015) {
+			obstacles.add(new Bat(this, playerX+2*screenWidth,playerY));
+		}
+		else if (rng<0.02) {
+			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY+tileSize));
+		}
 	}
 	
 }

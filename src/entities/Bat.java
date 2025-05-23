@@ -15,10 +15,10 @@ public class Bat extends Obstacles {
 	}
 	public void move() {
 		if (gp.playerY<y) {
-			y-=gp.tileSize;
+			y-=gp.tileSize/10;
 		}
 		else {
-			y+=gp.tileSize;
+			y+=gp.tileSize/10;
 		}
 		x+=(int)(gp.playerXvelo/2);
 	}

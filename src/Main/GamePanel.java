@@ -178,7 +178,7 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		tiles.draw(g2);
 		for (Obstacles obstacle : obstacles) {
-			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 - obstacle.y + playerY, tileSize, tileSize, null);
+			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 + obstacle.y - playerY, tileSize, tileSize, null);
         }
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,60,60, null);
 		g2.setFont(g2.getFont().deriveFont(15f)); // Set font size to 15

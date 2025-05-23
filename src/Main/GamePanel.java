@@ -95,41 +95,28 @@ public class GamePanel extends JPanel implements Runnable{
 		//Game time
 		double drawInterval = 1000000000/FPS;
 		double nextTime = System.nanoTime()+drawInterval;
-		try {
-			Thread.sleep((long) 1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		while (gameThread != null) {
 			update();
 			
 			repaint();
 
-			while (gameThread != null) {
-				update();
+			try {
+				double remainingTime = nextTime- System.nanoTime();
+				remainingTime = remainingTime/1000000;
 				
-				repaint();
-				
-				try {
-					double remainingTime = nextTime- System.nanoTime();
-					remainingTime = remainingTime/1000000;
-					
-					if(remainingTime <0) {
-						remainingTime = 0;
-					}
-					
-					Thread.sleep((long) remainingTime);
-					
-					nextTime += drawInterval;
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(remainingTime <0) {
+					remainingTime = 0;
 				}
+				
+				Thread.sleep((long) remainingTime);
+				
+				nextTime += drawInterval;
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
-		
-		
 	}
 	
 		
@@ -140,10 +127,13 @@ public class GamePanel extends JPanel implements Runnable{
 		
 	// Call this method when the game ends
 	private void triggerGameOver() {
+		/*
 		if (gameOverListener != null) {
 			gameOverListener.run();
 			gameOver = true;
 		}
+		*/
+		gameOver = true;
 	}
 	
 	public Player getPlayer() {
@@ -199,8 +189,9 @@ public class GamePanel extends JPanel implements Runnable{
 
 		tiles.draw(g2);
 		for (Obstacles obstacle : obstacles) {
-			g2.drawImage(obstacle.getOImage().getImage(), obstacle.x, obstacle.y, tileSize, tileSize, null);
+			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 - obstacle.y + playerY, tileSize, tileSize, null);
         }
+		
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,tileSize,tileSize, null);
 
 
@@ -289,13 +280,13 @@ public class GamePanel extends JPanel implements Runnable{
 	public void addObstacles() {
 		double rng = Math.random();
 		if (rng<0.01) {
-			obstacles.add(new Mushroom(this, playerX+2*screenWidth));
+			obstacles.add(new Mushroom(this, playerX + 2*screenWidth));
 		}
 		else if (rng<0.015) {
-			obstacles.add(new Bat(this, playerX+2*screenWidth,playerY));
+			obstacles.add(new Bat(this, playerX + 2*screenWidth, playerY));
 		}
 		else if (rng<0.025) {
-			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-3+(int)(6*(Math.random()*tileSize))));
+			obstacles.add(new WindBoost(this, playerX + 2 * screenWidth, playerY - 3 + (int)(6*(Math.random()*tileSize))));
 		}
 	}
 	

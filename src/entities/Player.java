@@ -44,8 +44,8 @@ public class Player {
 	}
 	
 	public int upgradeLaunch() {
-		if(gameCurrency >= 10*launchLevel) {
-			gameCurrency -= 10*launchLevel;
+		if(gameCurrency >= 100*launchLevel) {
+			gameCurrency -= 100*launchLevel;
 			launchLevel++;
 			
 		}

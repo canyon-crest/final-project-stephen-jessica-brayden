@@ -12,7 +12,7 @@ public class UpgradeMenu extends JPanel implements Runnable {
 	JLabel playerCurrency = new JLabel("Player Currency: $10", SwingConstants.CENTER);
     JLabel strengthUpgradeCost = new JLabel("Flap Strength Upgrade: $20/L", SwingConstants.CENTER);
     JLabel limitUpgradeCost = new JLabel("Flap Limit Upgrade: $30/L", SwingConstants.CENTER);
-    JLabel launchUpgradeCost = new JLabel("Launch Upgrade: $10/L", SwingConstants.CENTER);
+    JLabel launchUpgradeCost = new JLabel("Launch Upgrade: $100/L", SwingConstants.CENTER);
 	
     JLabel label = new JLabel("Choose Upgrades:", SwingConstants.CENTER);
     Player player;

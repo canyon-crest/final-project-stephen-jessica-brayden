@@ -279,13 +279,13 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void addObstacles() {
 		double rng = Math.random();
-		if (rng<0.01) {
+		if (rng<0.015) {
 			obstacles.add(new Mushroom(this, playerX + 2*screenWidth));
 		}
-		else if (rng<0.015) {
+		else if (rng<0.020) {
 			obstacles.add(new Bat(this, playerX + 2*screenWidth, playerY));
 		}
-		else if (rng<0.025) {
+		else if (rng<0.035) {
 			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-6+(int)(12*(Math.random()*tileSize))));
 		}
 	}

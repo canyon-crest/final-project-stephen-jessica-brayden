@@ -11,5 +11,6 @@ public class Mushroom extends Obstacles {
 	public void effect() {
 		super.effect();
 		gp.playerYvelo*=-1;
+		gp.playerYvelo+=100;
 	}
 }

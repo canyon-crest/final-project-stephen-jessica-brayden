@@ -1,4 +1,6 @@
 package Main;
+import java.awt.BorderLayout;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -19,9 +21,11 @@ public class Main {
 		window.setTitle("BirdBrain");
 		
 		GamePanel gamePanel = new GamePanel();
+		UpgradeMenu upgrade = new UpgradeMenu(gamePanel.player);
+
 		
-		//JPanel display = new JPanel();
 		window.add(gamePanel);
+		window.add(upgrade, BorderLayout.SOUTH);
 		window.pack();
 		
 		
@@ -29,10 +33,9 @@ public class Main {
 		window.setVisible(true);
 		
 		gamePanel.startGameThread();
+		upgrade.startUpgradeThread();
 		
-		gamePanel.setGameOverListener(() -> {
-            window.dispose(); 
-        });
+
 	}
 
 }

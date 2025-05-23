@@ -4,7 +4,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 
 public class Player {
-	private int gameCurrency = 100;
+	private int gameCurrency = 10;
 	private int flapStrengthLevel = 1;
 	private int flapLimitLevel = 1;
 	private int liftLevel = 1;
@@ -19,18 +19,20 @@ public class Player {
 		this.name = name;
 	}
 
-	public void upgradeFlapStrength() {
-		if(gameCurrency >= 20) {
-			gameCurrency -= 20;
+	public int upgradeFlapStrength() {
+		if(gameCurrency >= 20*flapStrengthLevel) {
+			gameCurrency -= 20*flapStrengthLevel;
 			flapStrengthLevel++;
 		}
+		return flapStrengthLevel;
 	}
 	
-	public void upgradeFlapLimit() {
-		if(gameCurrency >= 30) {
-			gameCurrency -= 30;
+	public int upgradeFlapLimit() {
+		if(gameCurrency >= 30*flapLimitLevel) {
+			gameCurrency -= 30*flapLimitLevel;
 			flapLimitLevel++;
 		}
+		return flapLimitLevel;
 	}
 	
 	public void upgradeLift() {
@@ -41,8 +43,13 @@ public class Player {
 		dragLevel++;
 	}
 	
-	public void upgradeLaunch() {
-		launchLevel++;
+	public int upgradeLaunch() {
+		if(gameCurrency >= 10*launchLevel) {
+			gameCurrency -= 10*launchLevel;
+			launchLevel++;
+			
+		}
+		return launchLevel;
 	}
 	
 	public int getCurrency() {
@@ -50,11 +57,11 @@ public class Player {
 	}
 	
 	public double getFlapStrength() {
-		return Math.pow(1.3, flapStrengthLevel);
+		return Math.pow(1.1, flapStrengthLevel);
 	}
 	
 	public int getFlapLimit() {
-		return (int) (1000000*Math.pow(1.3, flapLimitLevel));
+		return (int) (100*Math.pow(1.1, flapLimitLevel));
 	}
 	public double getLift() {
 		return Math.pow(0.95, liftLevel);
@@ -63,10 +70,14 @@ public class Player {
 		return Math.pow(0.95, dragLevel);
 	}
 	public double getLaunch() {
-		return Math.pow(1.3, launchLevel);
+		return Math.pow(1.1, launchLevel);
 	}
 	public String getName() {
 		return name;
+	}
+	public int addCurrency(int x) {
+		gameCurrency+=x;
+		return gameCurrency;
 	}
 	
 	public void getImage(boolean flap) {

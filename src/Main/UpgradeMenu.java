@@ -50,7 +50,7 @@ public class UpgradeMenu extends JPanel implements Runnable {
 		ActionListener actionListener3 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	launchUpgradeCost.setText("Launch Upgrade: $"+10*player.upgradeLaunch());
+		    	launchUpgradeCost.setText("Launch Upgrade: $"+100*player.upgradeLaunch());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
 		    }
 		};

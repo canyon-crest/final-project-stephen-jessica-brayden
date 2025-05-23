@@ -90,7 +90,6 @@ public class GamePanel extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		//Game time
-<<<<<<< HEAD
 		
 		try {
 			Thread.sleep((long) 1000);
@@ -98,11 +97,11 @@ public class GamePanel extends JPanel implements Runnable{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-=======
+
 		double drawInterval = 1000000000/FPS;
 		double nextTime = System.nanoTime()+drawInterval;
 
->>>>>>> d31fe4ea9150947736a50dd39498ee0e7541cacf
+
 		while (gameThread != null) {
 			update();
 			
@@ -189,11 +188,11 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		tiles.draw(g2);
 		for (Obstacles obstacle : obstacles) {
-<<<<<<< HEAD
+
 			System.out.println("Drawing obstacle at x=" + obstacle.x + ", y=" + obstacle.y);
-=======
+
 			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 + obstacle.y - playerY, tileSize, tileSize, null);
->>>>>>> d31fe4ea9150947736a50dd39498ee0e7541cacf
+
         }
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,60,60, null);
 		g2.setFont(g2.getFont().deriveFont(15f)); // Set font size to 15
@@ -294,7 +293,6 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void addObstacles() {
 		double rng = Math.random();
-<<<<<<< HEAD
 	
 	
 		if (rng<0.01) {
@@ -305,7 +303,6 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 		else if (rng<0.025) {
 			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-6+(int)(12*(Math.random()*tileSize))));
->>>>>>> d31fe4ea9150947736a50dd39498ee0e7541cacf
 		}
 	}
 	

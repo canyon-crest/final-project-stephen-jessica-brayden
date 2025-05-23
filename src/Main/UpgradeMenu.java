@@ -8,29 +8,49 @@ import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 
-public class UpgradeMenu extends JPanel {
-    public UpgradeMenu(Player player) {
-        setSize(400, 300);
-        setLayout(new GridLayout(2, 3, 10, 10));
+public class UpgradeMenu extends JPanel implements Runnable {
+	JLabel playerCurrency = new JLabel("Player Currency: $10", SwingConstants.CENTER);
+    JLabel strengthUpgradeCost = new JLabel("Flap Strength Upgrade: $20/L", SwingConstants.CENTER);
+    JLabel limitUpgradeCost = new JLabel("Flap Limit Upgrade: $30/L", SwingConstants.CENTER);
+    JLabel launchUpgradeCost = new JLabel("Launch Upgrade: $10/L", SwingConstants.CENTER);
+	
+    JLabel label = new JLabel("Choose Upgrades:", SwingConstants.CENTER);
+    Player player;
+    Thread upgrade;
+    
+	public void startUpgradeThread() {
+		upgrade = new Thread(this);
+		upgrade.start();
+	}
+	
+	public UpgradeMenu(Player player) {
+        this.player = player;
+		setSize(400, 300);
+        setLayout(new GridLayout(2, 4, 10, 10));
         
-        JLabel playerCurrency = new JLabel("Player Currency: $" + player.getCurrency(), SwingConstants.CENTER);
-        JLabel strengthUpgradeCost = new JLabel("Flap Strength Upgrade: $20", SwingConstants.CENTER);
-        JLabel limitUpgradeCost = new JLabel("Flap Limit Upgrade: $30", SwingConstants.CENTER);
         
-		JLabel label = new JLabel("Choose Upgrades:", SwingConstants.CENTER);
 
 		ActionListener actionListener1 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	player.upgradeFlapStrength();
+		    	strengthUpgradeCost.setText("Flap Strength Upgrade: $"+20*player.upgradeFlapStrength());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
+		    	
 		    }
 		};
 		
 		ActionListener actionListener2 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	player.upgradeFlapLimit();
+		    	limitUpgradeCost.setText("Flap Limit Upgrade: $"+30*player.upgradeFlapLimit());
+		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
+		    }
+		};
+		
+		ActionListener actionListener3 = new ActionListener() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		    	launchUpgradeCost.setText("Launch Upgrade: $"+10*player.upgradeLaunch());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
 		    }
 		};
@@ -40,6 +60,9 @@ public class UpgradeMenu extends JPanel {
 		
         JButton increaseFlapLimit = new JButton("Increase Flap Limit");
         increaseFlapLimit.addActionListener(actionListener2);
+        
+        JButton increaseLaunch = new JButton("Increase Launch Strength");
+        increaseLaunch.addActionListener(actionListener3);
 
         setBounds(25, 25, 300, 200);
         
@@ -47,14 +70,27 @@ public class UpgradeMenu extends JPanel {
         add(playerCurrency);
         add(strengthUpgradeCost);
         add(limitUpgradeCost);
+        add(launchUpgradeCost);
         
         // Add more buttons for other upgrades...
         add(label);
         add(increaseFlapStrength);
         add(increaseFlapLimit);
+        add(increaseLaunch);
         // Add other buttons...
 
         setVisible(true);
 
     }
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		while (true) {
+			playerCurrency.setText("Player Currency: $" + player.getCurrency());
+			
+			
+			
+		}
+	}
 }

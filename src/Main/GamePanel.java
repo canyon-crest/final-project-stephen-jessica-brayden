@@ -189,7 +189,8 @@ public class GamePanel extends JPanel implements Runnable{
 		tiles.draw(g2);
 		for (Obstacles obstacle : obstacles) {
 
-			System.out.println("Drawing obstacle at x=" + obstacle.x + ", y=" + obstacle.y);
+			//System.out.println("Drawing obstacle at x=" + obstacle.x + ", y=" + obstacle.y);
+			System.out.println(obstacles.size());
 
 			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 + obstacle.y - playerY, tileSize, tileSize, null);
 
@@ -224,6 +225,7 @@ public class GamePanel extends JPanel implements Runnable{
 			int textX = (screenWidth - textWidth) / 2; // Center the text horizontally
 			int textY = screenHeight / 4; // Position the text near the top
 			g2.drawString(launchText, textX, textY);
+			boostLimit = player.getFlapLimit();
 		}
 
 		if (gameOver) {
@@ -292,17 +294,19 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void addObstacles() {
-		double rng = Math.random();
-	
-	
-		if (rng<0.01) {
-			obstacles.add(new Mushroom(this, playerX + 2*screenWidth));
-		}
-		else if (rng<0.015) {
-			obstacles.add(new Bat(this, playerX + 2*screenWidth, playerY));
-		}
-		else if (rng<0.025) {
-			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-6+(int)(12*(Math.random()*tileSize))));
+		if (!showLaunchLine) {
+			double rng = Math.random();
+		
+		
+			if (rng<0.01) {
+				obstacles.add(new Mushroom(this, playerX + 2*screenWidth));
+			}
+			else if (rng<0.015) {
+				obstacles.add(new Bat(this, playerX + 2*screenWidth, playerY));
+			}
+			else if (rng<0.025) {
+				obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-6+(int)(12*(Math.random()*tileSize))));
+			}
 		}
 	}
 	

@@ -167,7 +167,6 @@ public class GamePanel extends JPanel implements Runnable{
 	    for (Obstacles obstacle : obstacles) {
 	        if (obstacle.x < playerX - screenWidth || obstacle.triggered) {
 	            toRemove.add(obstacle);
-				System.out.println("Removing obstacle at x=" + obstacle.x + ", triggered=" + obstacle.triggered);
 	        }
 	        else {
 	        	obstacle.move();
@@ -188,10 +187,6 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		tiles.draw(g2);
 		for (Obstacles obstacle : obstacles) {
-
-			//System.out.println("Drawing obstacle at x=" + obstacle.x + ", y=" + obstacle.y);
-			System.out.println(obstacles.size());
-
 			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 + obstacle.y - playerY, tileSize, tileSize, null);
 
         }
@@ -242,7 +237,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void updatePlayerPos() {
 		if (showLaunchLine && mouse.click) {
-			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 2));
+			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 4));
 			
 			playerXvelo = launchAcceleration * Math.cos(launchAngle); 
 			playerYvelo = -launchAcceleration * Math.sin(launchAngle); 
@@ -260,7 +255,7 @@ public class GamePanel extends JPanel implements Runnable{
 			} else {
 				isLaunching = false; 
 			}
-	
+			
 			player.getImage(true); 
 		} else {
 

@@ -90,8 +90,17 @@ public class GamePanel extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		//Game time
+		
+		try {
+			Thread.sleep((long) 1000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		double drawInterval = 1000000000/FPS;
 		double nextTime = System.nanoTime()+drawInterval;
+
 
 		while (gameThread != null) {
 			update();
@@ -158,7 +167,6 @@ public class GamePanel extends JPanel implements Runnable{
 	    for (Obstacles obstacle : obstacles) {
 	        if (obstacle.x < playerX - screenWidth || obstacle.triggered) {
 	            toRemove.add(obstacle);
-				System.out.println("Removing obstacle at x=" + obstacle.x + ", triggered=" + obstacle.triggered);
 	        }
 	        else {
 	        	obstacle.move();
@@ -179,11 +187,8 @@ public class GamePanel extends JPanel implements Runnable{
 		Graphics2D g2 = (Graphics2D)g;
 		tiles.draw(g2);
 		for (Obstacles obstacle : obstacles) {
-<<<<<<< HEAD
-			System.out.println("Drawing obstacle at x=" + obstacle.x + ", y=" + obstacle.y);
-=======
 			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 + obstacle.y - playerY, tileSize, tileSize, null);
->>>>>>> d31fe4ea9150947736a50dd39498ee0e7541cacf
+
         }
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,60,60, null);
 		g2.setFont(g2.getFont().deriveFont(15f)); // Set font size to 15
@@ -215,6 +220,7 @@ public class GamePanel extends JPanel implements Runnable{
 			int textX = (screenWidth - textWidth) / 2; // Center the text horizontally
 			int textY = screenHeight / 4; // Position the text near the top
 			g2.drawString(launchText, textX, textY);
+			boostLimit = player.getFlapLimit();
 		}
 
 		if (gameOver) {
@@ -231,7 +237,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void updatePlayerPos() {
 		if (showLaunchLine && mouse.click) {
-			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 2));
+			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 4));
 			
 			playerXvelo = launchAcceleration * Math.cos(launchAngle); 
 			playerYvelo = -launchAcceleration * Math.sin(launchAngle); 
@@ -249,7 +255,7 @@ public class GamePanel extends JPanel implements Runnable{
 			} else {
 				isLaunching = false; 
 			}
-	
+			
 			player.getImage(true); 
 		} else {
 
@@ -283,19 +289,19 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void addObstacles() {
-		double rng = Math.random();
-<<<<<<< HEAD
-	
-	
-		if (rng<0.01) {
-			obstacles.add(new Mushroom(this, playerX + 2*screenWidth));
-		}
-		else if (rng<0.015) {
-			obstacles.add(new Bat(this, playerX + 2*screenWidth, playerY));
-		}
-		else if (rng<0.025) {
-			obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-6+(int)(12*(Math.random()*tileSize))));
->>>>>>> d31fe4ea9150947736a50dd39498ee0e7541cacf
+		if (!showLaunchLine) {
+			double rng = Math.random();
+		
+		
+			if (rng<0.01) {
+				obstacles.add(new Mushroom(this, playerX + 2*screenWidth));
+			}
+			else if (rng<0.015) {
+				obstacles.add(new Bat(this, playerX + 2*screenWidth, playerY));
+			}
+			else if (rng<0.025) {
+				obstacles.add(new WindBoost(this, playerX+2*screenWidth,playerY-6+(int)(12*(Math.random()*tileSize))));
+			}
 		}
 	}
 	

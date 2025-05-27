@@ -10,9 +10,9 @@ import java.awt.GridLayout;
 
 public class UpgradeMenu extends JPanel implements Runnable {
 	JLabel playerCurrency = new JLabel("Player Currency: $10", SwingConstants.CENTER);
-    JLabel strengthUpgradeCost = new JLabel("Flap Strength Upgrade: $20/L", SwingConstants.CENTER);
-    JLabel limitUpgradeCost = new JLabel("Flap Limit Upgrade: $30/L", SwingConstants.CENTER);
-    JLabel launchUpgradeCost = new JLabel("Launch Upgrade: $10/L", SwingConstants.CENTER);
+    JLabel strengthUpgradeCost = new JLabel("Flap Strength Upgrade: $40", SwingConstants.CENTER);
+    JLabel limitUpgradeCost = new JLabel("Flap Limit Upgrade: $30", SwingConstants.CENTER);
+    JLabel launchUpgradeCost = new JLabel("Launch Upgrade: $50", SwingConstants.CENTER);
 	
     JLabel label = new JLabel("Choose Upgrades:", SwingConstants.CENTER);
     Player player;
@@ -33,7 +33,7 @@ public class UpgradeMenu extends JPanel implements Runnable {
 		ActionListener actionListener1 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	strengthUpgradeCost.setText("Flap Strength Upgrade: $"+20*player.upgradeFlapStrength());
+		    	strengthUpgradeCost.setText("Flap Strength Upgrade: $"+player.upgradeFlapStrength());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
 		    	
 		    }
@@ -42,7 +42,7 @@ public class UpgradeMenu extends JPanel implements Runnable {
 		ActionListener actionListener2 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	limitUpgradeCost.setText("Flap Limit Upgrade: $"+30*player.upgradeFlapLimit());
+		    	limitUpgradeCost.setText("Flap Limit Upgrade: $"+player.upgradeFlapLimit());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
 		    }
 		};
@@ -50,7 +50,7 @@ public class UpgradeMenu extends JPanel implements Runnable {
 		ActionListener actionListener3 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
-		    	launchUpgradeCost.setText("Launch Upgrade: $"+10*player.upgradeLaunch());
+		    	launchUpgradeCost.setText("Launch Upgrade: $"+player.upgradeLaunch());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
 		    }
 		};

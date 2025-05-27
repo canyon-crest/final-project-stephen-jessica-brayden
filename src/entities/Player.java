@@ -20,19 +20,21 @@ public class Player {
 	}
 
 	public int upgradeFlapStrength() {
-		if(gameCurrency >= 20*flapStrengthLevel) {
-			gameCurrency -= 20*flapStrengthLevel;
+		int cost = (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
+		if(gameCurrency >= cost ) {
+			gameCurrency -= cost;
 			flapStrengthLevel++;
 		}
-		return flapStrengthLevel;
+		return (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 	}
 	
 	public int upgradeFlapLimit() {
-		if(gameCurrency >= 30*flapLimitLevel) {
-			gameCurrency -= 30*flapLimitLevel;
+		int cost = (int)(30*getFlapLimit()*flapLimitLevel/110);
+		if(gameCurrency >= cost) {
+			gameCurrency -= cost;
 			flapLimitLevel++;
 		}
-		return flapLimitLevel;
+		return (int)(30*getFlapLimit()*flapLimitLevel/110);
 	}
 	
 	public void upgradeLift() {
@@ -44,12 +46,13 @@ public class Player {
 	}
 	
 	public int upgradeLaunch() {
-		if(gameCurrency >= 10*launchLevel) {
-			gameCurrency -= 10*launchLevel;
+		int cost = (int)(50*getLaunch()*launchLevel/1.1);
+		if(gameCurrency >= cost) {
+			gameCurrency -= cost;
 			launchLevel++;
 			
 		}
-		return launchLevel;
+		return  (int)(50*getLaunch()*launchLevel/1.1);
 	}
 	
 	public int getCurrency() {

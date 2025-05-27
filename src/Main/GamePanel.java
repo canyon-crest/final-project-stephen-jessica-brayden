@@ -90,19 +90,9 @@ public class GamePanel extends JPanel implements Runnable{
 	public void run() {
 		// TODO Auto-generated method stub
 		//Game time
-<<<<<<< HEAD
-		
-		try {
-			Thread.sleep((long) 1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-=======
 		double drawInterval = 1000000000/FPS;
 		double nextTime = System.nanoTime()+drawInterval;
 
->>>>>>> d31fe4ea9150947736a50dd39498ee0e7541cacf
 		while (gameThread != null) {
 			update();
 			

@@ -64,9 +64,7 @@ public class GamePanel extends JPanel implements Runnable{
 
 	private int score = 0;
 	private int highScore = 0;
-	private int launchDelayCounter = 0; 
-	private final int LAUNCH_DELAY = 30; 
-	private boolean launchDone = false;
+	private boolean showNoBoostMessage = false;
 	
 	private List<Obstacles> obstacles = new ArrayList<>();
 
@@ -190,6 +188,15 @@ public class GamePanel extends JPanel implements Runnable{
 			g2.drawImage(obstacle.getOImage().getImage(), screenWidth/4 + obstacle.x - playerX, screenHeight/2 + obstacle.y - playerY, tileSize, tileSize, null);
 
         }
+		if (showNoBoostMessage) {
+			String noBoostText = "*No Boost Remaining!*";
+			g2.setFont(g2.getFont().deriveFont(36f));
+			g2.setColor(Color.RED);
+			int textWidth = g2.getFontMetrics().stringWidth(noBoostText);
+			int textX = (screenWidth - textWidth) / 2;
+			int textY = screenHeight / 2 - 100;
+			g2.drawString(noBoostText, textX, textY);
+		}
 		g2.drawImage(player.image.getImage(), screenWidth/4,screenHeight/2,60,60, null);
 		g2.setFont(g2.getFont().deriveFont(15f)); // Set font size to 15
 		g2.setColor(Color.BLACK); // Set text color
@@ -266,8 +273,16 @@ public class GamePanel extends JPanel implements Runnable{
 				playerYvelo += player.getFlapStrength() * scalar * (-angle);
 				playerXvelo += player.getFlapStrength() * scalar * Math.sqrt(1 - angle * angle);
 				boostLimit--;
+				player.getImage(mouse.click);
+				showNoBoostMessage = false;
 			}
-			player.getImage(mouse.click);
+			else if (mouse.click && boostLimit<=0) {
+				showNoBoostMessage = true;
+
+			}
+			else{
+				showNoBoostMessage = false;
+			}
 		}
 
 

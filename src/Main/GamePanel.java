@@ -271,6 +271,13 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 
 
+		 if (Double.isNaN(playerXvelo) || Double.isNaN(playerYvelo)) {
+				System.out.println("DEBUG: Velocity is NaN! playerXvelo=" + playerXvelo + ", playerYvelo=" + playerYvelo);
+				playerXvelo = 0;
+				playerYvelo = 0;
+		}
+
+
 		playerY -= (int)playerYvelo;
 		playerX += (int)playerXvelo;
 

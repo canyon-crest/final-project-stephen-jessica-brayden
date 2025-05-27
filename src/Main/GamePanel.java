@@ -20,6 +20,7 @@ import tile.TileManager;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.sound.sampled.*;
 
 public class GamePanel extends JPanel implements Runnable{
 	
@@ -74,6 +75,7 @@ public class GamePanel extends JPanel implements Runnable{
 		this.setDoubleBuffered(true);
 		this.addMouseListener(mouse);
 		this.addMouseMotionListener(mouse);
+		playBackgroundMusic("background.wav");
 		
 		this.setLayout(new BorderLayout());
 
@@ -82,6 +84,45 @@ public class GamePanel extends JPanel implements Runnable{
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
+	}
+
+
+	
+	public void playSound(String filename) {
+		try {
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		} catch (Exception e) {
+			System.out.println("Error playing sound: " + filename);
+			e.printStackTrace();
+		}
+	}
+
+	private Clip backgroundClip;
+
+	public void playBackgroundMusic(String filename) {
+		try {
+			if (backgroundClip != null && backgroundClip.isRunning()) {
+				backgroundClip.stop();
+				backgroundClip.close();
+			}
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));
+			backgroundClip = AudioSystem.getClip();
+			backgroundClip.open(audioIn);
+			backgroundClip.loop(Clip.LOOP_CONTINUOUSLY); // Loop forever
+		} catch (Exception e) {
+			System.out.println("Error playing background music: " + filename);
+			e.printStackTrace();
+		}
+	}
+
+	public void stopBackgroundMusic() {
+		if (backgroundClip != null && backgroundClip.isRunning()) {
+			backgroundClip.stop();
+			backgroundClip.close();
+		}
 	}
 
 	@Override
@@ -147,6 +188,7 @@ public class GamePanel extends JPanel implements Runnable{
         // Check if the player hits the ground
         if (playerY >= 89 * tileSize && !showLaunchLine && playerXvelo<1) {
             triggerGameOver();
+			playSound("lose.wav");
 			return;
         }
 
@@ -154,6 +196,7 @@ public class GamePanel extends JPanel implements Runnable{
         for (Obstacles obstacle : obstacles) {
             if (obstacle.collidesWith(playerX, playerY, tileSize, tileSize)) {
                 obstacle.effect();
+				playSound("hit.wav");
             }
         }
     }
@@ -244,6 +287,7 @@ public class GamePanel extends JPanel implements Runnable{
 	
 	public void updatePlayerPos() {
 		if (showLaunchLine && mouse.click) {
+			playSound("launch.wav");
 			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 4));
 			
 			playerXvelo = launchAcceleration * Math.cos(launchAngle); 
@@ -278,7 +322,6 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 			else if (mouse.click && boostLimit<=0) {
 				showNoBoostMessage = true;
-
 			}
 			else{
 				showNoBoostMessage = false;

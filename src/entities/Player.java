@@ -2,6 +2,8 @@ package entities;
 import java.awt.Image;
 
 import javax.swing.ImageIcon;
+import javax.sound.sampled.*;
+
 
 public class Player {
 	private int gameCurrency = 10;
@@ -19,11 +21,29 @@ public class Player {
 		this.name = name;
 	}
 
+	public void playSound(String filename) {
+		try {
+			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));
+			Clip clip = AudioSystem.getClip();
+			clip.open(audioIn);
+			clip.start();
+		} catch (Exception e) {
+			System.out.println("Error playing sound: " + filename);
+			e.printStackTrace();
+		}
+	}
+	
+
+
 	public int upgradeFlapStrength() {
 		int cost = (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 		if(gameCurrency >= cost ) {
+			playSound("upgrade.wav");
 			gameCurrency -= cost;
 			flapStrengthLevel++;
+		}
+		else{
+			playSound("error.wav");
 		}
 		return (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 	}
@@ -31,8 +51,12 @@ public class Player {
 	public int upgradeFlapLimit() {
 		int cost = (int)(30*getFlapLimit()*flapLimitLevel/110);
 		if(gameCurrency >= cost) {
+			playSound("upgrade.wav");
 			gameCurrency -= cost;
 			flapLimitLevel++;
+		}
+		else{
+			playSound("error.wav");
 		}
 		return (int)(30*getFlapLimit()*flapLimitLevel/110);
 	}
@@ -48,9 +72,12 @@ public class Player {
 	public int upgradeLaunch() {
 		int cost = (int)(50*getLaunch()*launchLevel/1.1);
 		if(gameCurrency >= cost) {
+			playSound("upgrade.wav");
 			gameCurrency -= cost;
 			launchLevel++;
-			
+		}
+		else{
+			playSound("error.wav");
 		}
 		return  (int)(50*getLaunch()*launchLevel/1.1);
 	}

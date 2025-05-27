@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import javax.sound.sampled.*;
+
 
 public class UpgradeMenu extends JPanel implements Runnable {
 	JLabel playerCurrency = new JLabel("Player Currency: $10", SwingConstants.CENTER);
@@ -22,20 +24,20 @@ public class UpgradeMenu extends JPanel implements Runnable {
 		upgrade = new Thread(this);
 		upgrade.start();
 	}
-	
+
 	public UpgradeMenu(Player player) {
         this.player = player;
 		setSize(400, 300);
         setLayout(new GridLayout(2, 4, 10, 10));
         
         
+	
 
 		ActionListener actionListener1 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
 		    	strengthUpgradeCost.setText("Flap Strength Upgrade: $"+player.upgradeFlapStrength());
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
-		    	
 		    }
 		};
 		
@@ -54,6 +56,7 @@ public class UpgradeMenu extends JPanel implements Runnable {
 		    	playerCurrency.setText("Player Currency: $" + player.getCurrency());
 		    }
 		};
+
 
 		JButton increaseFlapStrength = new JButton("Increase Flap Strength");
 		increaseFlapStrength.addActionListener(actionListener1);

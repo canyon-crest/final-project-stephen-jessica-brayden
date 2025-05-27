@@ -22,6 +22,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.sound.sampled.*;
 
+//game panel that contains the game logic and rendering
 public class GamePanel extends JPanel implements Runnable{
 	
 	//tile sizing
@@ -42,9 +43,6 @@ public class GamePanel extends JPanel implements Runnable{
 	TileManager tiles = new TileManager(this);
 	MouseHandler mouse = new MouseHandler();
 	Thread gameThread;
-
-
-	
 	
 	//setup player
 	public Player player = new Player("player");
@@ -55,20 +53,25 @@ public class GamePanel extends JPanel implements Runnable{
 	private double launchAcceleration = 2;
 	private double maxLaunchSpeed = 100;
 	private boolean isLaunching = false;
-
-
 	public int colPlayer = 0;
 	int boostLimit = player.getFlapLimit();
 	double angle;
+
+	// Screen messages
 	public boolean showLaunchLine = true;
+	private boolean showNoBoostMessage = false;
 
-
+	//scores
 	private int score = 0;
 	private int highScore = 0;
-	private boolean showNoBoostMessage = false;
 	
+	//background music clip
+	private Clip backgroundClip;
+
+	//list of obstacles
 	private List<Obstacles> obstacles = new ArrayList<>();
 
+	// Constructor
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
@@ -81,13 +84,13 @@ public class GamePanel extends JPanel implements Runnable{
 
 	}
 
+	// Start the game thread
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
 
-
-	
+	// Plays the sound file with the given filename
 	public void playSound(String filename) {
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));
@@ -100,8 +103,8 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 
-	private Clip backgroundClip;
 
+	// Plays the background music from the given filename
 	public void playBackgroundMusic(String filename) {
 		try {
 			if (backgroundClip != null && backgroundClip.isRunning()) {
@@ -127,13 +130,11 @@ public class GamePanel extends JPanel implements Runnable{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		//Game time
 		
 		try {
 			Thread.sleep((long) 1000);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -158,7 +159,6 @@ public class GamePanel extends JPanel implements Runnable{
 				
 				nextTime += drawInterval;
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -192,6 +192,7 @@ public class GamePanel extends JPanel implements Runnable{
 			return;
         }
 
+		//List traversal
         // Check if the player collides with any obstacle
         for (Obstacles obstacle : obstacles) {
             if (obstacle.collidesWith(playerX, playerY, tileSize, tileSize)) {
@@ -205,6 +206,7 @@ public class GamePanel extends JPanel implements Runnable{
 	public void update() {
 		addObstacles();
 		List<Obstacles> toRemove = new ArrayList<>();
+		//List traversal
 	    for (Obstacles obstacle : obstacles) {
 	        if (obstacle.x < playerX - screenWidth || obstacle.triggered) {
 	            toRemove.add(obstacle);
@@ -286,6 +288,7 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 	
 	public void updatePlayerPos() {
+		// Launch the player if the launch line is shown and the mouse is clicked
 		if (showLaunchLine && mouse.click) {
 			playSound("launch.wav");
 			double launchAngle = Math.atan2(mouse.y - (screenHeight / 2), mouse.x - (screenWidth / 4));
@@ -298,6 +301,7 @@ public class GamePanel extends JPanel implements Runnable{
 			gameOver = false;
 		}
 	
+		// Launch the player
 		if (isLaunching) {
 			double speed = Math.sqrt(playerXvelo * playerXvelo + playerYvelo * playerYvelo);
 			if (speed < maxLaunchSpeed*player.getLaunch()) {
@@ -309,7 +313,7 @@ public class GamePanel extends JPanel implements Runnable{
 			
 			player.getImage(true); 
 		} else {
-
+			// Update player position based on velocity
 			angle = (mouse.y - this.getLocationOnScreen().getY() - 100) / 25 / Math.sqrt(screenWidth ^ 2 + screenHeight ^ 2);
 			playerYvelo = ((playerYvelo - 0.5 * playerXvelo * player.getLift() * (angle) - 5) * scalar);
 			playerXvelo = playerXvelo - (playerXvelo * player.getDrag() * Math.abs(angle) + playerYvelo * Math.sqrt(1 - angle * angle)) * scalar/20;
@@ -353,6 +357,7 @@ public class GamePanel extends JPanel implements Runnable{
 		colPlayer = playerX/tileSize;
 	}
 	
+	// Adds obstacles to the game at random intervals
 	public void addObstacles() {
 		if (!showLaunchLine) {
 			double rng = Math.random();
@@ -369,5 +374,5 @@ public class GamePanel extends JPanel implements Runnable{
 			}
 		}
 	}
-	
+
 }

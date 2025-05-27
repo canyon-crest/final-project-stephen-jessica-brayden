@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import entities.Player;
 
+// Main class that initializes the game window and starts the game thread
 public class Main {
 	
 	public enum GameState {
@@ -23,7 +24,6 @@ public class Main {
 		GamePanel gamePanel = new GamePanel();
 		UpgradeMenu upgrade = new UpgradeMenu(gamePanel.player);
 
-		
 		window.add(gamePanel);
 		window.add(upgrade, BorderLayout.SOUTH);
 		window.pack();

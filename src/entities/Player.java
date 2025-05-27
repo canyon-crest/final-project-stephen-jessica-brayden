@@ -4,7 +4,7 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.sound.sampled.*;
 
-
+// Player class that holds the player's attributes and methods for upgrading and playing sounds
 public class Player {
 	private int gameCurrency = 10;
 	private int flapStrengthLevel = 1;
@@ -21,6 +21,7 @@ public class Player {
 		this.name = name;
 	}
 
+	//play the sound effects
 	public void playSound(String filename) {
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));

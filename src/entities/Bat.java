@@ -5,6 +5,7 @@ import javax.swing.ImageIcon;
 import Main.GamePanel;
 
 public class Bat extends Obstacles {
+// Bat obstacle that gives a effect to the player's horizontal velocity
 	public Bat(GamePanel gp, int x, int y) {
 		super("bat", gp, x, y);
 

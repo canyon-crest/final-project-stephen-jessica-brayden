@@ -9,7 +9,8 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.sound.sampled.*;
 
-
+// UpgradeMenu class that allows players to upgrade their abilities
+// and displays the current player currency and upgrade costs
 public class UpgradeMenu extends JPanel implements Runnable {
 	JLabel playerCurrency = new JLabel("Player Currency: $10", SwingConstants.CENTER);
     JLabel strengthUpgradeCost = new JLabel("Flap Strength Upgrade: $40", SwingConstants.CENTER);
@@ -20,19 +21,18 @@ public class UpgradeMenu extends JPanel implements Runnable {
     Player player;
     Thread upgrade;
     
+	// Constructor for UpgradeMenu that initializes the player and sets up the UI
 	public void startUpgradeThread() {
 		upgrade = new Thread(this);
 		upgrade.start();
 	}
 
+	// Constructor for UpgradeMenu that takes a Player object and sets up the UI components
 	public UpgradeMenu(Player player) {
         this.player = player;
 		setSize(400, 300);
         setLayout(new GridLayout(2, 4, 10, 10));
         
-        
-	
-
 		ActionListener actionListener1 = new ActionListener() {
 		    @Override
 		    public void actionPerformed(ActionEvent e) {
@@ -88,12 +88,8 @@ public class UpgradeMenu extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (true) {
 			playerCurrency.setText("Player Currency: $" + player.getCurrency());
-			
-			
-			
 		}
 	}
 }

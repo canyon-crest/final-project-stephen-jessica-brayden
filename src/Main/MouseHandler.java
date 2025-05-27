@@ -7,6 +7,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
+// MouseHandler class that implements MouseListener and MouseMotionListener to handle mouse events
 public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	public int x, y;
@@ -14,17 +15,13 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
 		x = e.getX();
 		y = e.getY();
-	
-
 		
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
 		x = e.getX();
 		y = e.getY();
 		
@@ -32,7 +29,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			click = false;
 		}
@@ -60,7 +56,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			click = true;
 		}
@@ -88,7 +83,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			click = false;
 		}
@@ -119,7 +113,6 @@ public class MouseHandler implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		x = e.getX();
 		y = e.getY();
 		if (e.getButton() == MouseEvent.BUTTON1) {

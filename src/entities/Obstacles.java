@@ -7,6 +7,10 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
+/**
+ * Obstacles class represents various obstacles in the game.
+ * It handles their position, movement, collision detection, and rendering.
+ */
 public class Obstacles {
 	private String type = "";
 	protected GamePanel gp;

@@ -35,7 +35,7 @@ public class Player {
 	}
 	
 
-
+	// Upgrade methods that increase the player's abilities and deduct currency
 	public int upgradeFlapStrength() {
 		int cost = (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 		if(gameCurrency >= cost ) {
@@ -49,6 +49,7 @@ public class Player {
 		return (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 	}
 	
+	// Upgrade method that increases the player's flap limit and deducts currency
 	public int upgradeFlapLimit() {
 		int cost = (int)(30*getFlapLimit()*flapLimitLevel/110);
 		if(gameCurrency >= cost) {
@@ -70,6 +71,7 @@ public class Player {
 		dragLevel++;
 	}
 	
+	// Upgrade method that increases the player's launch strength and deducts currency
 	public int upgradeLaunch() {
 		int cost = (int)(50*getLaunch()*launchLevel/1.1);
 		if(gameCurrency >= cost) {
@@ -111,6 +113,7 @@ public class Player {
 		return gameCurrency;
 	}
 	
+	// Method to get the current image of the player based on flap state
 	public void getImage(boolean flap) {
 		if (flap) {
 			flapCounter++;

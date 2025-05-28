@@ -17,11 +17,18 @@ public class Player {
 	private int flapCounter = 0;
 	private final int FLAP_INTERVAL = 8; 
 	
+	/**
+	* constructor that sets up the player
+	* @param name     name of player
+	*/
 	public Player(String name) {
 		this.name = name;
 	}
 
-	//play the sound effects
+	/**
+	* play the sound effects
+	* @param fileName     file name of the audio to be played
+	*/
 	public void playSound(String filename) {
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));
@@ -34,8 +41,10 @@ public class Player {
 		}
 	}
 	
-
-	// Upgrade methods that increase the player's abilities and deduct currency
+	/**
+	* Upgrade methods that increase the player's abilities and deduct currency
+	* @return value of upgraded flapStrength
+	*/
 	public int upgradeFlapStrength() {
 		int cost = (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 		if(gameCurrency >= cost ) {
@@ -49,7 +58,10 @@ public class Player {
 		return (int)(40*getFlapStrength()*flapStrengthLevel/1.1);
 	}
 	
-	// Upgrade method that increases the player's flap limit and deducts currency
+	/**
+	* Upgrade method that increases the player's flap limit and deducts currency
+	* @return value of upgraded flapLimit
+	*/
 	public int upgradeFlapLimit() {
 		int cost = (int)(30*getFlapLimit()*flapLimitLevel/110);
 		if(gameCurrency >= cost) {
@@ -63,15 +75,24 @@ public class Player {
 		return (int)(30*getFlapLimit()*flapLimitLevel/110);
 	}
 	
+	/**
+	* Upgrade method that increases the player's lift
+	*/
 	public void upgradeLift() {
 		liftLevel++;
 	}
 	
+	/**
+	* Upgrade method that increases the player's drag
+	*/
 	public void upgradeDrag() {
 		dragLevel++;
 	}
 	
-	// Upgrade method that increases the player's launch strength and deducts currency
+	/**
+	* Upgrade method that increases the player's launch strength and deducts currency
+	* @return value of upgraded launch power
+	*/
 	public int upgradeLaunch() {
 		int cost = (int)(50*getLaunch()*launchLevel/1.1);
 		if(gameCurrency >= cost) {
@@ -85,35 +106,69 @@ public class Player {
 		return  (int)(50*getLaunch()*launchLevel/1.1);
 	}
 	
+	/**
+	* @return value of gameCurrency
+	*/
 	public int getCurrency() {
 		return gameCurrency;
 	}
 	
+	/**
+	* @return value of flapStrength
+	*/
 	public double getFlapStrength() {
 		return Math.pow(1.1, flapStrengthLevel);
 	}
 	
+	/**
+	* @return value of flapLimit
+	*/
 	public int getFlapLimit() {
 		return (int) (100*Math.pow(1.1, flapLimitLevel));
 	}
+	
+	/**
+	* @return value of lift
+	*/
 	public double getLift() {
 		return Math.pow(0.95, liftLevel);
 	}
+	
+	/**
+	* @return value of drag
+	*/
 	public double getDrag() {
 		return Math.pow(0.95, dragLevel);
 	}
+	
+	/**
+	* @return value of launch power
+	*/
 	public double getLaunch() {
 		return Math.pow(1.1, launchLevel);
 	}
+	
+	/**
+	* @return value of player's name
+	*/
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	* adds currency and returns amount after adding
+	* @param x     amount of currency to be added
+	* @return value of gameCurrency
+	*/
 	public int addCurrency(int x) {
 		gameCurrency+=x;
 		return gameCurrency;
 	}
 	
-	// Method to get the current image of the player based on flap state
+	/**
+	* Method to get the current image of the player based on flap state
+	* @param flap     boolean value of if the bird is flapping
+	*/
 	public void getImage(boolean flap) {
 		if (flap) {
 			flapCounter++;

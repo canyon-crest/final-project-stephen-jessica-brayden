@@ -14,6 +14,10 @@ public class TileManager {
 	Tile[] tiles;
 	int[] colLayout = new int[100];
 	
+	/**
+	* the constructor for TileManager
+	* @param gp    graphics to draw tiles
+	*/
 	public TileManager(GamePanel gp) {
 		this.gp = gp;
 		tiles = new Tile[5];
@@ -36,6 +40,9 @@ public class TileManager {
 		getTileImage();
 	}
 	
+	/**
+	* loads images into the tiles to be displayed
+	*/
 	public void getTileImage() {
 			try {
 				tiles[0] = new Tile();
@@ -51,6 +58,10 @@ public class TileManager {
 			}
 	}
 	
+	/**
+	* draws all tiles
+	* @param g2    draw tiles onto graphic context
+	*/
 	public void draw(Graphics2D g2) {
 		int col = gp.colPlayer-gp.screenCol;
 		int row = 0;

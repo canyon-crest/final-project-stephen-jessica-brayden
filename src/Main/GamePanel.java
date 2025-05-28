@@ -71,7 +71,9 @@ public class GamePanel extends JPanel implements Runnable{
 	//list of obstacles
 	private List<Obstacles> obstacles = new ArrayList<>();
 
-	// Constructor
+	/**
+	* constructor for game panel
+	*/
 	public GamePanel() {
 		this.setPreferredSize(new Dimension(screenWidth, screenHeight));
 		this.setBackground(Color.black);
@@ -84,13 +86,18 @@ public class GamePanel extends JPanel implements Runnable{
 
 	}
 
-	// Start the game thread
+	/**
+	* start game thread
+	*/
 	public void startGameThread() {
 		gameThread = new Thread(this);
 		gameThread.start();
 	}
 
-	// Plays the sound file with the given filename
+	/**
+	* Plays the sound file with the given filename
+	* @param filename    name of the audio file to be played
+	*/
 	public void playSound(String filename) {
 		try {
 			AudioInputStream audioIn = AudioSystem.getAudioInputStream(getClass().getResource("/sounds/" + filename));
@@ -104,7 +111,10 @@ public class GamePanel extends JPanel implements Runnable{
 	}
 
 
-	// Plays the background music from the given filename
+	/**
+	* Plays the background music from the given filename
+	* @param filename    name of the audio file to be played
+	*/
 	public void playBackgroundMusic(String filename) {
 		try {
 			if (backgroundClip != null && backgroundClip.isRunning()) {
@@ -121,6 +131,9 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 
+	/**
+	* stops background music
+	*/
 	public void stopBackgroundMusic() {
 		if (backgroundClip != null && backgroundClip.isRunning()) {
 			backgroundClip.stop();
@@ -128,6 +141,9 @@ public class GamePanel extends JPanel implements Runnable{
 		}
 	}
 
+	/**
+	* main loop to render game according time
+	*/
 	@Override
 	public void run() {
 		//Game time
@@ -167,7 +183,9 @@ public class GamePanel extends JPanel implements Runnable{
 		
 
 		
-	// Call this method when the game ends
+	/**
+	* Call this method when the game ends
+	*/
 	private void triggerGameOver() {
 		gameOver = true;
 		showLaunchLine = true;
@@ -180,10 +198,16 @@ public class GamePanel extends JPanel implements Runnable{
 		boostLimit = player.getFlapLimit();
 	}
 	
+	/**
+	* @return player
+	*/
 	public Player getPlayer() {
 		return this.player; 
 	}
 
+	/**
+	* checks for collisions including ground and obstacles
+	*/
 	private void checkCollisions() {
         // Check if the player hits the ground
         if (playerY >= 89 * tileSize && !showLaunchLine && playerXvelo<1) {
@@ -202,7 +226,9 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 	
-	//Update's game info
+	/**
+	* Update's game info
+	*/
 	public void update() {
 		addObstacles();
 		List<Obstacles> toRemove = new ArrayList<>();
@@ -223,8 +249,10 @@ public class GamePanel extends JPanel implements Runnable{
 
 	}
 
-	
-	//Redraw's components on screen
+	/**
+	* Redraw's components on screen
+	* @param g     graphical context for drawing all game components
+	*/
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D)g;
@@ -287,6 +315,9 @@ public class GamePanel extends JPanel implements Runnable{
 		g2.dispose();
 	}
 	
+	/**
+	* updates the players position depending on situation and physics
+	*/
 	public void updatePlayerPos() {
 		// Launch the player if the launch line is shown and the mouse is clicked
 		if (showLaunchLine && mouse.click) {
@@ -357,7 +388,9 @@ public class GamePanel extends JPanel implements Runnable{
 		colPlayer = playerX/tileSize;
 	}
 	
-	// Adds obstacles to the game at random intervals
+	/**
+	* Adds obstacles to the game at random intervals
+	*/
 	public void addObstacles() {
 		if (!showLaunchLine) {
 			double rng = Math.random();

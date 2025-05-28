@@ -1,1 +1,9 @@
+Final UML Diagram: https://drive.google.com/file/d/1VxGAudBuwk3-USTpE9P3mNWf4CGAduLM/view?usp=sharing
+Video Link:
 
+Game Description: Launch a bird and try to avoid obstacles and travel as far as possible! Use boosts to your advantage and use currency to upgrade stats that can help you travel farther.
+
+How to Play: The player can launch a bird at a certain angle. After launching the bird, the player can control the angle of the bird with the cursor, which changes the lift and drag of the bird, and flap its wings to push it in the direction of the cursor. There are a limited number of flaps. There are certain power ups and obstacles that are placed on the ground and in the air. Once a round ends, the player can choose upgrades (reduce drag, increase lift, increase number of flaps, increase power of flaps, increase launch speed) in a menu based on the amount of currency and then start another round with the upgrades. The round ends once the player touches the ground or hits an obstacle. Score is calculated by the distance travelled. Currency is calculated based on the score of the run and added to a total. This is a single-player game.
+
+
+Special Features: There are obstacles moving around that you must avoid in order to survive and fly higher to get a better score. There are also boosts that can help you travel farther and get a higher score. These boosts and obstacles will spawn in random positions.
